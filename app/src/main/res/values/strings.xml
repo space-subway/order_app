@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">TestApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_product_tittle_hint">Введите наименование...</string>
+    <string name="add_product_price_hint">Введите цену...</string>
+    <string name="add_product_count_hint">Введите количество...</string>
+
+    <!-- messages -->
+    <string name="whait">Загрузка содержимого...</string>
+    <string name="no_items">Список пуст</string>
+    <!-- end messages -->
+
+    <string name="price">Цена: </string>
+    <string name="count">Количество: </string>
+    <string name="peace">шт.</string>
+
+    <string name="no_selected">Выберите товар из списка слева</string>
+
+    <string name="tittle_please">Пожалуйста введите наименование товара</string>
+</resources>
