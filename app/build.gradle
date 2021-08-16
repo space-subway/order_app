@@ -1,12 +1,9 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "com.online.booking"
         minSdkVersion 23
