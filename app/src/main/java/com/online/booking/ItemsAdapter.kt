@@ -11,6 +11,7 @@ import com.online.booking.domain.Item
 class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>(){
     inner class ItemViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         var tittleTextView : TextView = view.findViewById(R.id.title)
+        var priceTextView  : TextView = view.findViewById(R.id.price)
     }
 
     @NonNull
@@ -21,7 +22,8 @@ class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAd
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[ position ]
-        holder.tittleTextView.text = item.tittle
+        holder.tittleTextView.text  = item.tittle
+        holder.priceTextView.text   = item.price.toString()
     }
 
     override fun getItemCount(): Int {
