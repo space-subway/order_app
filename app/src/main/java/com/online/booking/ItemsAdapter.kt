@@ -8,7 +8,10 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.online.booking.domain.Item
 
-class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>(){
+class ItemsAdapter(private val items: List<Item>,
+                   private val onClickListener: View.OnClickListener
+                   ) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>(){
+
     inner class ItemViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         var tittleTextView : TextView = view.findViewById(R.id.title)
         var priceTextView  : TextView = view.findViewById(R.id.price)
@@ -24,6 +27,8 @@ class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAd
         val item = items[ position ]
         holder.tittleTextView.text  = item.tittle
         holder.priceTextView.text   = item.price.toString()
+
+        holder.itemView.setOnClickListener(onClickListener)
     }
 
     override fun getItemCount(): Int {

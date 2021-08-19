@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
 import com.online.booking.web.ItemService
@@ -68,9 +69,17 @@ class ItemListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        itemAdapter = ItemsAdapter(items!!)
-
         var recyclerView = binding.recyclerItemsView
+
+        /** Click Listener to trigger navigation based on if you have
+         * a single pane layout or two pane layout
+         */
+        val onClickListener = View.OnClickListener { itemView ->
+            val bundle = Bundle()
+            itemView.findNavController().navigate(R.id.show_item_detail, bundle)
+        }
+
+        itemAdapter = ItemsAdapter(items!!, onClickListener)
 
         recyclerView.adapter = itemAdapter
 
