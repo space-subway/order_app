@@ -2,8 +2,14 @@ package com.online.booking
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.domain.Item
 import com.online.booking.web.ItemService
 import retrofit2.Call
@@ -17,55 +23,28 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    public final val BASE_URL = "http://10.0.2.2:8080"
-
-    private var items: MutableList<Item>? = ArrayList<Item>()
-    private lateinit var itemAdapter : ItemsAdapter
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView( R.layout.activity_main )
 
-        title = "Main Activity Title"
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val recyclerView : RecyclerView = findViewById( R.id.recyclerView )
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
 
-        itemAdapter = ItemsAdapter( items!! )
+        val navController = navHostFragment.navController
 
-        val layoutManager = LinearLayoutManager(applicationContext)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
 
-        recyclerView.layoutManager  = layoutManager
-        recyclerView.adapter        = itemAdapter
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
-        loadItems()
     }
 
-    private fun loadItems(){
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val itemService = retrofit.create(ItemService::class.java)
-
-        val itemServiceCall = itemService.list()
-
-        itemServiceCall.enqueue( object : Callback<List<Item>>{
-            override fun onResponse(call: Call<List<Item>>, response: Response<List<Item>>) {
-                if(response.code() == 200){
-                    val recieved = response.body()!!.asReversed()
-
-                    items!!.clear()
-                    items!!.addAll(recieved)
-                }
-
-                itemAdapter.notifyDataSetChanged()
-            }
-
-            override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-
-            }
-
-        } )
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_item_detail)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 }

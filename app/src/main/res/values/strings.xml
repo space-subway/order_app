@@ -19,4 +19,6 @@
     <string name="no_selected">Выберите товар из списка слева</string>
 
     <string name="tittle_please">Пожалуйста введите наименование товара</string>
+
+    <string name="title_item_detail">Item Detail</string>
 </resources>
