@@ -18,9 +18,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ItemListFragment : Fragment() {
-
-    public final val BASE_URL = "http://10.0.2.2:8080"
+class ItemListFragment : BaseFragment() {
 
     private var items: MutableList<Item>? = ArrayList<Item>()
     private lateinit var itemAdapter : ItemsAdapter
@@ -75,7 +73,12 @@ class ItemListFragment : Fragment() {
          * a single pane layout or two pane layout
          */
         val onClickListener = View.OnClickListener { itemView ->
+            var item = itemView.tag as Item
             val bundle = Bundle()
+            bundle.putString(
+                ItemDetailFragment.ARG_ITEM_ID,
+                item.id
+            )
             itemView.findNavController().navigate(R.id.show_item_detail, bundle)
         }
 
@@ -97,11 +100,6 @@ class ItemListFragment : Fragment() {
     }
 
     private fun loadItems(){
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
         val itemService = retrofit.create(ItemService::class.java)
 
         val itemServiceCall = itemService.list()
@@ -119,7 +117,7 @@ class ItemListFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-
+                TODO("Not yet implemented")
             }
 
         } )
