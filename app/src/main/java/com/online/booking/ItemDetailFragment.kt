@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.online.booking.databinding.FragmentItemDetailBinding
+import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
 import com.online.booking.web.ItemService
 import retrofit2.Call
@@ -29,14 +31,18 @@ class ItemDetailFragment : BaseFragment() {
         }
     }
 
+    private var _binding: FragmentItemDetailBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_item_detail, container, false)
-
-        return rootView
+        _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
@@ -61,6 +67,6 @@ class ItemDetailFragment : BaseFragment() {
     }
 
     private fun updateUI( item : Item ){
-        TODO("Fill user interface")
+
     }
 }
