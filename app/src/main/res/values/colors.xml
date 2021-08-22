@@ -33,4 +33,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="yellow1">#ffcc00</color>
+    <color name="yellow2">#cc9900</color>
+    <color name="grey">#cccccc</color>
 </resources>

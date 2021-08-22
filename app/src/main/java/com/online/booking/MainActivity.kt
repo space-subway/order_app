@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbarMainActivity)
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
 
@@ -28,6 +30,10 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+    }
+
+    public fun setTitle( title : String ){
+        supportActionBar?.title = title
     }
 
     override fun onSupportNavigateUp(): Boolean {

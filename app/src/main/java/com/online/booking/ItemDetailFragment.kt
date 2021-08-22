@@ -45,6 +45,17 @@ class ItemDetailFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).setTitle("")
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -67,6 +78,6 @@ class ItemDetailFragment : BaseFragment() {
     }
 
     private fun updateUI( item : Item ){
-
+        (activity as MainActivity).setTitle(item.tittle)
     }
 }
