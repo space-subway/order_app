@@ -78,5 +78,9 @@ class ItemDetailFragment : BaseFragment() {
     private fun updateUI( item : Item ){
         binding.itemPrice.text = "$" + item.price
         binding.itemTitle.text = item.tittle
+        binding.shortDescription.text = item.descriptionShort
+        binding.description.text = item.description
+        binding.itemRating.text = item.rating?.toString()
+        if( item.viewCount != null ) binding.itemViewCount.text = item.viewCount.toString() + " Views"
     }
 }

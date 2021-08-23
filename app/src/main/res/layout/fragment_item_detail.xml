@@ -90,6 +90,7 @@
                         android:textSize="@dimen/details_view_description_text_size" />
 
                     <TextView
+                        android:id="@+id/description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/title_view" />
