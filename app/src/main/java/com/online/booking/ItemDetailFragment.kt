@@ -47,8 +47,6 @@ class ItemDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (activity as MainActivity).setTitle("")
     }
 
     override fun onDestroy() {
@@ -78,6 +76,7 @@ class ItemDetailFragment : BaseFragment() {
     }
 
     private fun updateUI( item : Item ){
-        (activity as MainActivity).setTitle(item.tittle)
+        binding.itemPrice.text = "$" + item.price
+        binding.itemTitle.text = item.tittle
     }
 }

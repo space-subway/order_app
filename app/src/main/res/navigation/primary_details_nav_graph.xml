@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/item_detail_fragment"
         android:name="com.online.booking.ItemDetailFragment"
-        android:label="Details"
+        android:label=""
         tools:layout="@layout/fragment_item_detail">
         <argument
             android:name="item_id"

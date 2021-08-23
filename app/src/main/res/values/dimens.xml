@@ -19,5 +19,13 @@
     <dimen name="container_horizontal_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="details_price_text_size">36dp</dimen>
+    <dimen name="details_title_text_size">24dp</dimen>
+    <dimen name="details_view_count_text_size">14dp</dimen>
+    <dimen name="details_view_rating_text_size">16dp</dimen>
+    <dimen name="details_view_description_text_size">21dp</dimen>
+    <dimen name="content_margin">24dp</dimen>
+    <dimen name="content_margin_min">8dp</dimen>
+    <dimen name="details_content_margin_right">100dp</dimen>
 
 </resources>
