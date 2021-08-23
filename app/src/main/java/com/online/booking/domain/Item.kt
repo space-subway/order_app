@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 data class Item (
     @SerializedName("id") var id : String,
-    @SerializedName("tittle") var tittle : String,
+    @SerializedName("title") var title : String,
     @SerializedName("description") var description : String,
     @SerializedName("descriptionShort") var descriptionShort : String,
     @SerializedName("price") var price : BigDecimal,
