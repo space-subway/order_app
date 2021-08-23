@@ -7,5 +7,8 @@ data class Item (
     @SerializedName("id") var id : String,
     @SerializedName("tittle") var tittle : String,
     @SerializedName("description") var description : String,
-    @SerializedName("price") var price : BigDecimal
+    @SerializedName("descriptionShort") var descriptionShort : String,
+    @SerializedName("price") var price : BigDecimal,
+    @SerializedName("viewCount") var viewCount :  Integer,
+    @SerializedName("rating") var rating : Float
 )
