@@ -4,23 +4,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height">
 
-    <!-- this view reveals when swipe left -->
-    <RelativeLayout
-            android:tag="reveal-left"
-            android:background="@color/primary"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                app:tint="@color/icons"
-                android:src="@mipmap/ic_delete_black_24dp"/>
-    </RelativeLayout>
-
     <!-- this is the item front view -->
     <RelativeLayout
             android:tag="front"
