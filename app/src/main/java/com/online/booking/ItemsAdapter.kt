@@ -26,7 +26,7 @@ class ItemsAdapter(private val items: List<Item>,
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[ position ]
 
-        holder.tittleTextView.text  = item.tittle
+        holder.tittleTextView.text  = item.title
         holder.priceTextView.text   = item.price.toString()
 
         holder.itemView.tag = item
