@@ -9,6 +9,6 @@ data class Item (
     @SerializedName("description") var description : String,
     @SerializedName("descriptionShort") var descriptionShort : String,
     @SerializedName("price") var price : BigDecimal,
-    @SerializedName("viewCount") var viewCount :  Integer,
-    @SerializedName("rating") var rating : Float
+    @SerializedName("viewCount") var viewCount :  Int,
+    @SerializedName("rating") var rating : Rating
 )

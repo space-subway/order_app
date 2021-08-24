@@ -65,11 +65,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/short_description"
-                        android:layout_marginTop="@dimen/content_margin_min"
                         android:layout_marginLeft="@dimen/content_margin"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentBottom="true"
                         android:textSize="@dimen/details_view_rating_text_size" />
+
+                    <TextView
+                        android:id="@+id/item_rating_stars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/item_rating"
+                        android:layout_below="@+id/short_description"
+                        android:layout_marginLeft="@dimen/content_margin_min"
+                        android:textSize="@dimen/details_view_rating_text_size"
+                        android:text="● ● ● ● ●"/>
 
                 </RelativeLayout>
 
