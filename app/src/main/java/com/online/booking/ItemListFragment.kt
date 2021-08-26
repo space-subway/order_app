@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
@@ -15,13 +14,16 @@ import com.online.booking.web.ItemService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class ItemListFragment : BaseFragment() {
-
+class ItemListFragment: BaseFragment() {
     private var items: MutableList<Item>? = ArrayList<Item>()
     private lateinit var itemAdapter : ItemsAdapter
+
+    companion object {
+        fun getInstance( position: Int ): BaseFragment{
+            return ItemListFragment()
+        }
+    }
 
     /**
      * Method to intercept global key events in the
