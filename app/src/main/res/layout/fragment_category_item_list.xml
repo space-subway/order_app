@@ -2,84 +2,25 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_list_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<com.google.android.material.tabs.TabLayout
-        android:id="@+id/category_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="text_label_1"
-            />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="text_label_2"
-            />
-
-    </com.google.android.material.tabs.TabLayout>-->
-
-    <com.online.booking.utils.ui.view.CategoryTabLayout
-        android:id="@+id/category_tab"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
-
-    <!--<androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        style="@style/ChipTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/content_margin"
-        android:layout_marginLeft="@dimen/content_margin_min"
-        android:layout_marginRight="@dimen/content_margin_min">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_margin_min"
-            android:text="category one"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_margin_min"
-            android:text="category twoo"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_margin_min"
-            android:text="category three"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_margin_min"
-            android:text="category four"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_margin_min"
-            android:text="category five"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>-->
+        android:layout_marginBottom="@dimen/content_margin"
+        app:tabMode="scrollable"
+        android:minWidth="80dp"
+        app:tabIndicatorHeight="0dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/tab_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

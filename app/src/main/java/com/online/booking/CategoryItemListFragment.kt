@@ -30,10 +30,13 @@ class CategoryItemListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var categoryTab = binding.categoryTab
+        var categoryTab = binding.tabLayout
+
+        var titles = arrayListOf("category 1", "category 2")
+        //categoryTab.setTitlesAtTabs( titles )
 
         var viewPager   = binding.tabViewpager
-        var adapter : ViewPagerAdapter = ViewPagerAdapter(activity as MainActivity, 5)
+        var adapter : ViewPagerAdapter = ViewPagerAdapter(activity as MainActivity, titles.size)
         viewPager.adapter = adapter
 
         TabLayoutMediator(categoryTab, viewPager) { tab, position ->

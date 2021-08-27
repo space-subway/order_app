@@ -22,4 +22,11 @@
         <item name="colorOnSurface">@color/yellow2</item>
     </style>
 
+    <style name="ChipTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/selector_tab</item>
+        <item name="tabTextColor">@color/grey</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabTextAppearance">@android:style/TextAppearance.Widget.TabWidget</item>
+    </style>
+
 </resources>
