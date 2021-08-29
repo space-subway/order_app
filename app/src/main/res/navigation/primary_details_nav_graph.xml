@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/item_list_fragment"
         android:name="com.online.booking.CategoryItemListFragment"
-        android:label="Items">
+        android:label="Items"
+        tools:layout="@layout/fragment_category_item_list">
         <action
             android:id="@+id/show_item_detail"
             app:destination="@id/item_detail_fragment" />

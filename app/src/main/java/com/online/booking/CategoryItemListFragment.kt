@@ -33,7 +33,6 @@ class CategoryItemListFragment : BaseFragment() {
         var categoryTab = binding.tabLayout
 
         var titles = arrayListOf("category 1", "category 2")
-        //categoryTab.setTitlesAtTabs( titles )
 
         var viewPager   = binding.tabViewpager
         var adapter : ViewPagerAdapter = ViewPagerAdapter(activity as MainActivity, titles.size)

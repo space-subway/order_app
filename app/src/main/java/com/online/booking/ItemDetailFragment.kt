@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
@@ -56,6 +57,8 @@ class ItemDetailFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+
+        (activity as MainActivity).showUpToolbar()
 
         val itemService = retrofit.create(ItemService::class.java)
         val itemServiceCall = itemService.getItem(itemId!!)
