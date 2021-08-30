@@ -10,18 +10,25 @@ import androidx.core.view.ViewCompat
 import androidx.navigation.findNavController
 import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
+import com.online.booking.domain.ItemCategory
 import com.online.booking.web.ItemService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ItemListFragment: BaseFragment() {
-    private var items: MutableList<Item>? = ArrayList<Item>()
     private lateinit var itemAdapter : ItemsAdapter
 
     companion object {
-        fun getInstance( position: Int ): BaseFragment{
-            return ItemListFragment()
+        public final val ARG_ITEMS = "items"
+
+        fun getInstance( items: ArrayList<Item>? ): BaseFragment{
+            var bundle = Bundle()
+            bundle.putParcelableArrayList( ARG_ITEMS, items)
+            var fragment = ItemListFragment()
+            fragment.arguments = bundle
+
+            return fragment
         }
     }
 
@@ -69,6 +76,8 @@ class ItemListFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var items = requireArguments().getParcelableArrayList<Item>(ARG_ITEMS)
+
         var recyclerView = binding.recyclerItemsView
 
         /** Click Listener to trigger navigation based on if you have
@@ -93,35 +102,11 @@ class ItemListFragment: BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        loadItems()
+        itemAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-
-    private fun loadItems(){
-        val itemService = retrofit.create(ItemService::class.java)
-
-        val itemServiceCall = itemService.list()
-
-        itemServiceCall.enqueue( object : Callback<List<Item>> {
-            override fun onResponse(call: Call<List<Item>>, response: Response<List<Item>>) {
-                if(response.code() == 200){
-                    val recieved = response.body()!!.asReversed()
-
-                    items!!.clear()
-                    items!!.addAll(recieved)
-                }
-
-                itemAdapter.notifyDataSetChanged()
-            }
-
-            override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        } )
     }
 }
