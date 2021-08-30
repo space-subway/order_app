@@ -49,4 +49,12 @@ data class Item (
         }
     }
 
+    public fun overrageRating() : Double {
+        var overrageRating = 0.0
+        if( rating != null ) {
+            overrageRating = (( rating.oneStarCount + 2 * rating.twoStarCount + 3 * rating.threeStarCount + 4 * rating.fourStarCount + 5 * rating.fiveStarCount ) / 5).toDouble()
+        }
+
+        return overrageRating
+    }
 }

@@ -83,14 +83,7 @@ class ItemDetailFragment : BaseFragment() {
         binding.itemTitle.text = item.title
         binding.shortDescription.text = item.descriptionShort
         binding.description.text = item.description
-
-        var overrageRating = 0.0
-        var rating = item.rating
-        if( item.rating != null ) {
-            overrageRating = (( rating.oneStarCount + 2 * rating.twoStarCount + 3 * rating.threeStarCount + 4 * rating.fourStarCount + 5 * rating.fiveStarCount ) / 5).toDouble()
-        }
-
-        binding.itemRating.text = overrageRating.toString()
+        binding.itemRating.text = item.overrageRating().toString()
 
         if( item.viewCount != null ) binding.itemViewCount.text = item.viewCount.toString() + " Views"
     }
