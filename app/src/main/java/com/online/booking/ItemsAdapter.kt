@@ -13,8 +13,11 @@ class ItemsAdapter(private val items: List<Item>,
                    ) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>(){
 
     inner class ItemViewHolder(view : View) : RecyclerView.ViewHolder(view) {
-        var tittleTextView : TextView = view.findViewById(R.id.title)
-        var priceTextView  : TextView = view.findViewById(R.id.price)
+        var tittleTextView              : TextView = view.findViewById(R.id.title)
+        var priceTextView               : TextView = view.findViewById(R.id.price)
+        //var viewCountTextView           : TextView = view.findViewById(R.id.view_count)
+        var shortDescriptionTextView    : TextView = view.findViewById(R.id.short_description)
+        var ratingTextView              : TextView = view.findViewById(R.id.rating)
     }
 
     @NonNull
@@ -26,8 +29,11 @@ class ItemsAdapter(private val items: List<Item>,
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[ position ]
 
-        holder.tittleTextView.text  = item.title
-        holder.priceTextView.text   = item.price.toString()
+        holder.tittleTextView.text              = item.title
+        holder.priceTextView.text               = "$" + item.price
+        //holder.viewCountTextView.text           = item.viewCount.toString() + " Views"
+        holder.shortDescriptionTextView.text    = item.descriptionShort
+        holder.ratingTextView.text              = item.overrageRating().toString()
 
         holder.itemView.tag = item
         holder.itemView.setOnClickListener(onClickListener)

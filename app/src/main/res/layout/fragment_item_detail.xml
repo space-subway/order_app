@@ -37,7 +37,8 @@
                         android:layout_marginLeft="@dimen/content_margin"
                         android:layout_marginRight="@dimen/details_content_margin_right"
                         android:lines="1"
-                        android:textSize="@dimen/details_title_text_size" />
+                        android:textSize="@dimen/details_title_text_size"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/short_description"
@@ -68,7 +69,8 @@
                         android:layout_marginLeft="@dimen/content_margin"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentBottom="true"
-                        android:textSize="@dimen/details_view_rating_text_size" />
+                        android:textSize="@dimen/details_view_rating_text_size"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/item_rating_stars"
@@ -96,7 +98,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Description"
-                        android:textSize="@dimen/details_view_description_text_size" />
+                        android:textSize="@dimen/details_view_description_text_size"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/description"
@@ -115,7 +118,8 @@
                 android:layout_gravity="top|end"
                 android:layout_marginEnd="@dimen/fab_margin"
                 android:layout_marginTop="48dp"
-                android:textSize="@dimen/details_price_text_size" />
+                android:textSize="@dimen/details_price_text_size"
+                android:textStyle="bold"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
