@@ -15,9 +15,9 @@ class ItemsAdapter(private val items: List<Item>,
     inner class ItemViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         var tittleTextView              : TextView = view.findViewById(R.id.title)
         var priceTextView               : TextView = view.findViewById(R.id.price)
-        //var viewCountTextView           : TextView = view.findViewById(R.id.view_count)
         var shortDescriptionTextView    : TextView = view.findViewById(R.id.short_description)
         var ratingTextView              : TextView = view.findViewById(R.id.rating)
+        var ratingStarsTextView         : TextView = view.findViewById(R.id.rating_stars)
     }
 
     @NonNull
@@ -31,9 +31,22 @@ class ItemsAdapter(private val items: List<Item>,
 
         holder.tittleTextView.text              = item.title
         holder.priceTextView.text               = "$" + item.price
-        //holder.viewCountTextView.text           = item.viewCount.toString() + " Views"
         holder.shortDescriptionTextView.text    = item.descriptionShort
-        holder.ratingTextView.text              = item.overrageRating().toString()
+        var overrageRating = item.overrageRating()
+        holder.ratingTextView.text              = overrageRating.toString()
+        //calculate stars
+        var starCount = overrageRating.toInt()
+        when( starCount ){
+            1 -> holder.ratingStarsTextView.text = "●"
+            2 -> holder.ratingStarsTextView.text = "● ●"
+            3 -> holder.ratingStarsTextView.text = "● ● ●"
+            4 -> holder.ratingStarsTextView.text = "● ● ● ●"
+            5 -> holder.ratingStarsTextView.text = "● ● ● ● ●"
+            else -> {
+                holder.ratingTextView.visibility = View.GONE
+                holder.ratingStarsTextView.visibility = View.GONE
+            }
+        }
 
         holder.itemView.tag = item
         holder.itemView.setOnClickListener(onClickListener)

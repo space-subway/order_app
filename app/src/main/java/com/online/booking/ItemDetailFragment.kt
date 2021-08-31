@@ -82,8 +82,27 @@ class ItemDetailFragment : BaseFragment() {
         binding.itemPrice.text = "$" + item.price
         binding.itemTitle.text = item.title
         binding.shortDescription.text = item.descriptionShort
-        binding.description.text = item.description
-        binding.itemRating.text = item.overrageRating().toString()
+        if ( item.description == null || "" == item.description) {
+            binding.descriptionTitle.visibility = View.GONE
+        } else {
+            binding.description.text = item.description
+        }
+
+        var overrageRating = item.overrageRating()
+        binding.itemRating.text = overrageRating.toString()
+        //calculate stars
+        var starCount = overrageRating.toInt()
+        when( starCount ){
+            1 -> binding.itemRatingStars.text = "●"
+            2 -> binding.itemRatingStars.text = "● ●"
+            3 -> binding.itemRatingStars.text = "● ● ●"
+            4 -> binding.itemRatingStars.text = "● ● ● ●"
+            5 -> binding.itemRatingStars.text = "● ● ● ● ●"
+            else -> {
+                binding.itemRating.visibility = View.GONE
+                binding.itemRatingStars.visibility = View.GONE
+            }
+        }
 
         if( item.viewCount != null ) binding.itemViewCount.text = item.viewCount.toString() + " Views"
     }
