@@ -52,7 +52,12 @@ data class Item (
     public fun overrageRating() : Double {
         var overrageRating = 0.0
         if( rating != null ) {
-            overrageRating = (( rating.oneStarCount + 2 * rating.twoStarCount + 3 * rating.threeStarCount + 4 * rating.fourStarCount + 5 * rating.fiveStarCount ) / (rating.oneStarCount + rating.twoStarCount + rating.threeStarCount + rating.fourStarCount + rating.fiveStarCount)).toDouble()
+            var divider = rating.oneStarCount + rating.twoStarCount + rating.threeStarCount + rating.fourStarCount + rating.fiveStarCount
+            if( divider == 0 ){
+                overrageRating = 0.0
+            } else {
+                overrageRating = (( rating.oneStarCount + 2 * rating.twoStarCount + 3 * rating.threeStarCount + 4 * rating.fourStarCount + 5 * rating.fiveStarCount ) / divider).toDouble()
+            }
         }
 
         return overrageRating
