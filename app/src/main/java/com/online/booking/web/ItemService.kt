@@ -6,8 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ItemService {
-    @GET("product/list")
+    @GET("item/list")
     fun list(): Call<List<Item>>
-    @GET("product/{id}")
+    @GET("item/{id}")
     fun getItem( @Path(value = "id") id : String ): Call<Item>
 }
