@@ -16,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CategoryItemListFragment : BaseFragment() {
+class CategoryItemListFragment : Fragment() {
 
     private var itemsMap : MutableMap<ItemCategory, MutableList<Item>>? = HashMap()
 
@@ -65,7 +65,7 @@ class CategoryItemListFragment : BaseFragment() {
     }
 
     private fun loadItems(){
-        val itemService = retrofit.create(ItemService::class.java)
+        val itemService = (activity?.application as App).retrofit.create(ItemService::class.java)
 
         val itemServiceCall = itemService.list()
 

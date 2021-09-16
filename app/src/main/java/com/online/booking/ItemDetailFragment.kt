@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
@@ -13,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ItemDetailFragment : BaseFragment() {
+class ItemDetailFragment : Fragment() {
     companion object {
         const val ARG_ITEM_ID = "item_id"
     }
@@ -60,7 +61,7 @@ class ItemDetailFragment : BaseFragment() {
 
         (activity as MainActivity).showUpToolbar()
 
-        val itemService = retrofit.create(ItemService::class.java)
+        val itemService = (activity?.application as App).retrofit.create(ItemService::class.java)
         val itemServiceCall = itemService.getItem(itemId!!)
 
         itemServiceCall.enqueue( object : Callback<Item> {

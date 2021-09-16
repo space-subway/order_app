@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
@@ -16,13 +17,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ItemListFragment: BaseFragment() {
+class ItemListFragment: Fragment() {
     private lateinit var itemAdapter : ItemsAdapter
 
     companion object {
         public final val ARG_ITEMS = "items"
 
-        fun getInstance( items: ArrayList<Item>? ): BaseFragment{
+        fun getInstance( items: ArrayList<Item>? ): Fragment{
             var bundle = Bundle()
             bundle.putParcelableArrayList( ARG_ITEMS, items)
             var fragment = ItemListFragment()
