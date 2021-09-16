@@ -9,16 +9,17 @@ import java.util.concurrent.TimeUnit
 open class BaseFragment : Fragment() {
     public final val BASE_URL = "http://10.0.2.2:8080/"
 
-    protected val retrofit : Retrofit =
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
     protected val okHttpClient : OkHttpClient =
         OkHttpClient.Builder()
             .connectTimeout( 30, TimeUnit.SECONDS )
             .readTimeout( 30, TimeUnit.SECONDS )
             .writeTimeout( 30, TimeUnit.SECONDS )
+            .build()
+
+    protected val retrofit : Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
 }
