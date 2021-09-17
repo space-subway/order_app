@@ -28,4 +28,6 @@
     <dimen name="content_margin_min">8dp</dimen>
     <dimen name="details_content_margin_right">100dp</dimen>
 
+    <dimen name="big_icon_size">96dp</dimen>
+
 </resources>

@@ -5,6 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/network_status"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="@dimen/big_icon_size"
+            android:layout_height="@dimen/big_icon_size"
+            android:layout_margin="@dimen/content_margin_min"
+            android:src="@drawable/ic_baseline_wifi_off_24"/>
+
+        <TextView
+            android:id="@+id/connection_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin_min"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:text="Tap below for refresh"
+            android:layout_margin="@dimen/content_margin_min"/>
+
+        <ImageButton
+            android:id="@+id/connection_try_again"
+            android:layout_width="@dimen/big_icon_size"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_refresh_24"
+            android:layout_margin="@dimen/content_margin_min"/>
+
+    </LinearLayout>
+
     <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment_item_detail"
             android:name="androidx.navigation.fragment.NavHostFragment"
