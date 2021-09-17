@@ -49,7 +49,7 @@ data class Item (
         }
     }
 
-    public fun overrageRating() : Double {
+     fun overrageRating() : Double {
         var overrageRating = 0.0
         if( rating != null ) {
             var divider = rating.oneStarCount + rating.twoStarCount + rating.threeStarCount + rating.fourStarCount + rating.fiveStarCount

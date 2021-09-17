@@ -1,6 +1,7 @@
 package com.online.booking
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -8,9 +9,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.online.booking.databinding.ActivityMainBinding
-import com.online.booking.databinding.FragmentItemDetailBinding
+import com.online.booking.web.utils.InternetConnectionListener
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (application as App).connectionListener = this
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -38,11 +41,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    public fun showUpToolbar(){
+    fun showUpToolbar(){
         binding.appbarMainActivity.setExpanded(true, true)
     }
 
-    public fun setTitle( title : String ){
+    fun setTitle( title : String ){
         supportActionBar?.title = title
     }
 
@@ -55,5 +58,16 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
+    }
+
+    override fun onPause() {
+        (application as App).connectionListener = null
+        super.onPause()
+    }
+
+    override fun onInternetUnavailable() {
+        runOnUiThread {
+            Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_LONG).show()
+        }
     }
 }

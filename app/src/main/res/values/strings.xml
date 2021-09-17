@@ -3,6 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="no_internet">no internet connection</string>
+
     <string name="add_product_tittle_hint">Введите наименование...</string>
     <string name="add_product_price_hint">Введите цену...</string>
     <string name="add_product_count_hint">Введите количество...</string>

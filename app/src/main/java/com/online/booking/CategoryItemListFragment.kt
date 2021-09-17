@@ -93,7 +93,7 @@ class CategoryItemListFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-                TODO("Not yet implemented")
+
             }
 
         } )

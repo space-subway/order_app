@@ -74,7 +74,7 @@ class ItemDetailFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<Item>, t: Throwable) {
-                TODO("Not yet implemented")
+
             }
         })
     }
