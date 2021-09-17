@@ -23,13 +23,7 @@
             android:id="@+id/connection_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/content_margin_min"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/gray"
-            android:text="Tap below for refresh"
+            android:textColor="@android:color/darker_gray"
             android:layout_margin="@dimen/content_margin_min"/>
 
         <ImageButton
@@ -37,7 +31,7 @@
             android:layout_width="@dimen/big_icon_size"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_refresh_24"
-            android:layout_margin="@dimen/content_margin_min"/>
+            android:layout_margin="@dimen/content_margin_min" />
 
     </LinearLayout>
 

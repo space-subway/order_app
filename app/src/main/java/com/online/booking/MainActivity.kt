@@ -1,6 +1,7 @@
 package com.online.booking
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -67,7 +68,9 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
     override fun onInternetUnavailable() {
         runOnUiThread {
-            Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_LONG).show()
+            binding.connectionMessage.text = getString(R.string.no_internet)
+            binding.networkStatus.visibility = View.VISIBLE
+            binding.navHostFragmentItemDetail.visibility = View.GONE
         }
     }
 }
