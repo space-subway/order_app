@@ -11,7 +11,7 @@
         style="@style/ChipTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@android:color/white"
         android:layout_marginTop="@dimen/content_margin"
         android:layout_marginBottom="@dimen/content_margin"
         app:tabMode="scrollable"
