@@ -10,6 +10,9 @@ import com.online.booking.web.utils.NetworkConnectionInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.net.InetSocketAddress
+import java.net.Socket
 import java.util.concurrent.TimeUnit
 
 class App : Application() {
@@ -25,8 +28,15 @@ class App : Application() {
                     return this@App.isInternetAvailable()
                 }
 
-                override fun onInternetUnavailable(){
-                    connectionListener?.onInternetUnavailable()
+                override fun isServerFound(): Boolean {
+                    return this@App.isServerFound()
+                }
+
+                override fun onConnectionUnavailable( errType: ConnectionErrorType ){
+                    when (errType) {
+                        ConnectionErrorType.CONNECTION_IS_OFF -> connectionListener?.onInternetUnavailable()
+                        ConnectionErrorType.SERVER_NOT_FOUND -> connectionListener?.onServerIsNotAvailable()
+                    }
                 }
             } )
             .build()
@@ -38,9 +48,9 @@ class App : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    public var connectionListener:InternetConnectionListener? = null
+    var connectionListener:InternetConnectionListener? = null
 
-    private fun isInternetAvailable(): Boolean{
+    private fun isInternetAvailable(): Boolean {
         val connectivityManager = getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -59,6 +69,25 @@ class App : Application() {
             val nwInfo = connectivityManager.activeNetworkInfo ?: return false
             return nwInfo.isConnected
         }
+    }
+
+    private fun isServerFound(): Boolean {
+        var exist = false
+
+        val ip = BASE_URL.split(":")[1].removePrefix("//")
+        val port = BASE_URL.split(":")[2].removeSuffix("/").toInt()
+
+        try {
+            val sockaddr = InetSocketAddress(ip, port)
+            val socket = Socket()
+            socket.connect( sockaddr, 2000 )
+
+            exist = true
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return exist
     }
 
 

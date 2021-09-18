@@ -73,4 +73,12 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
             binding.navHostFragmentItemDetail.visibility = View.GONE
         }
     }
+
+    override fun onServerIsNotAvailable(){
+        runOnUiThread{
+            binding.connectionMessage.text = getString(R.string.no_server)
+            binding.networkStatus.visibility = View.VISIBLE
+            binding.navHostFragmentItemDetail.visibility = View.GONE
+        }
+    }
 }
