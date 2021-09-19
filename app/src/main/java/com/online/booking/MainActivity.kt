@@ -56,11 +56,9 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
 
-        try {
+        if( navHostFragment.childFragmentManager.fragments[0] is Refreshable ){
             val refreshableFragment = navHostFragment.childFragmentManager.fragments[0] as Refreshable
             refreshableFragment.refresh()
-        } catch (e: InvocationTargetException) {
-            e.printStackTrace()
         }
 
     }
