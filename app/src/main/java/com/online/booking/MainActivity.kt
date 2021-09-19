@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
     override fun onInternetUnavailable() {
         runOnUiThread {
             binding.connectionMessage.text = getString(R.string.no_internet)
-            binding.networkStatus.visibility = View.VISIBLE
+            binding.networkStatusView.visibility = View.VISIBLE
             binding.navHostFragmentItemDetail.visibility = View.GONE
         }
     }
@@ -92,8 +92,20 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
     override fun onServerIsNotAvailable(){
         runOnUiThread{
             binding.connectionMessage.text = getString(R.string.no_server)
-            binding.networkStatus.visibility = View.VISIBLE
+            binding.networkStatusView.visibility = View.VISIBLE
             binding.navHostFragmentItemDetail.visibility = View.GONE
+        }
+    }
+
+    override fun onServerResponse(code: Int) {
+        runOnUiThread{
+            when( code ) {
+                200 -> {
+                    //hide error view and show recycler list view
+                    binding.networkStatusView.visibility = View.GONE
+                    binding.navHostFragmentItemDetail.visibility = View.VISIBLE
+                }
+            }
         }
     }
 }

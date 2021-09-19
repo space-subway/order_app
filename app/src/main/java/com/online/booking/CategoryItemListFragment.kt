@@ -86,10 +86,12 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
                     setupCategoriesAdapter()
                 }
+
+                (this@CategoryItemListFragment.activity as MainActivity).onServerResponse( response.code() )
             }
 
             override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-
+                (this@CategoryItemListFragment.activity as MainActivity).onServerIsNotAvailable()
             }
 
         } )
