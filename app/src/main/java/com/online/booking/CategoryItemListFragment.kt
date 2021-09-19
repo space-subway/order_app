@@ -12,13 +12,14 @@ import com.online.booking.databinding.FragmentCategoryItemListBinding
 import com.online.booking.domain.Item
 import com.online.booking.domain.ItemCategory
 import com.online.booking.web.ItemService
+import com.online.booking.web.utils.Refreshable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CategoryItemListFragment : Fragment() {
+class CategoryItemListFragment : Fragment(), Refreshable {
 
-    private var itemsMap : MutableMap<ItemCategory, MutableList<Item>>? = HashMap()
+    private var itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
     private var _binding: FragmentCategoryItemListBinding? = null
 
@@ -35,15 +36,10 @@ class CategoryItemListFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onResume() {
         super.onResume()
 
         loadItems()
-
     }
 
     override fun onDestroyView() {
@@ -59,7 +55,7 @@ class CategoryItemListFragment : Fragment() {
         viewPager.adapter = adapter
 
         TabLayoutMediator(categoryTab, viewPager) { tab, position ->
-            tab.text = itemsMap!!.keys.elementAt(position)!!.name
+            tab.text = itemsMap.keys.elementAt(position).name
             viewPager.setCurrentItem(tab.position, true)
         }.attach()
     }
@@ -72,19 +68,19 @@ class CategoryItemListFragment : Fragment() {
         itemServiceCall.enqueue( object : Callback<List<Item>> {
             override fun onResponse(call: Call<List<Item>>, response: Response<List<Item>>) {
                 if(response.code() == 200){
-                    val recieved = response.body()!!.asReversed()
+                    val received = response.body()!!.asReversed()
 
-                    itemsMap!!.clear()
+                    itemsMap.clear()
 
-                    var it = recieved.listIterator()
+                    var it = received.listIterator()
                     while( it.hasNext() ){
                         var item = it.next()
                         if( item.category != null ){
 
-                            if( itemsMap!![item.category] == null )
-                                itemsMap!![item.category] = ArrayList<Item>()
+                            if( itemsMap[item.category] == null )
+                                itemsMap[item.category] = ArrayList()
 
-                            itemsMap!![item.category]!!.add( item )
+                            itemsMap[item.category]!!.add( item )
                         }
                     }
 
@@ -99,13 +95,17 @@ class CategoryItemListFragment : Fragment() {
         } )
     }
 
-    class ViewPagerAdapter(activity: AppCompatActivity, val itemsMap: MutableMap<ItemCategory, MutableList<Item>>? ): FragmentStateAdapter( activity ){
+    override fun refresh() {
+        loadItems()
+    }
+
+    class ViewPagerAdapter(activity: AppCompatActivity, private val itemsMap: MutableMap<ItemCategory, MutableList<Item>> ): FragmentStateAdapter( activity ){
         override fun getItemCount(): Int {
-            return itemsMap!!.keys.size
+            return itemsMap.keys.size
         }
 
         override fun createFragment(position: Int): Fragment {
-            var category = itemsMap!!.keys.elementAt(position)
+            var category = itemsMap.keys.elementAt(position)
             var items = itemsMap[ category ]
 
             return ItemListFragment.getInstance(items as ArrayList<Item>?)

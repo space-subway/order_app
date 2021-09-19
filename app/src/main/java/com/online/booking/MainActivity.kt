@@ -2,7 +2,6 @@ package com.online.booking
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -11,6 +10,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.web.utils.InternetConnectionListener
+import com.online.booking.web.utils.Refreshable
+import java.lang.reflect.InvocationTargetException
 
 class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
@@ -48,6 +49,20 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
     fun setTitle( title : String ){
         supportActionBar?.title = title
+    }
+
+    fun refresh( view : View ){
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
+
+        try {
+            val refreshableFragment = navHostFragment.childFragmentManager.fragments[0] as Refreshable
+            refreshableFragment.refresh()
+        } catch (e: InvocationTargetException) {
+            e.printStackTrace()
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

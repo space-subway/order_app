@@ -31,7 +31,8 @@
             android:layout_width="@dimen/big_icon_size"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_refresh_24"
-            android:layout_margin="@dimen/content_margin_min" />
+            android:layout_margin="@dimen/content_margin_min"
+            android:onClick="refresh"/>
 
     </LinearLayout>
 

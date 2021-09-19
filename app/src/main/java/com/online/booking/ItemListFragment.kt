@@ -11,17 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.online.booking.databinding.FragmentItemListBinding
 import com.online.booking.domain.Item
-import com.online.booking.domain.ItemCategory
-import com.online.booking.web.ItemService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ItemListFragment: Fragment() {
     private lateinit var itemAdapter : ItemsAdapter
 
     companion object {
-        public final val ARG_ITEMS = "items"
+        const val ARG_ITEMS = "items"
 
         fun getInstance( items: ArrayList<Item>? ): Fragment{
             var bundle = Bundle()
