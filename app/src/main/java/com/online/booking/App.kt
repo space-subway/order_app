@@ -7,9 +7,11 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import com.online.booking.web.utils.InternetConnectionListener
 import com.online.booking.web.utils.NetworkConnectionInterceptor
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -18,7 +20,9 @@ import java.util.concurrent.TimeUnit
 class App : Application() {
 
     companion object {
-        const val BASE_URL = "http://10.0.2.2:8080/"
+        const val BASE_URL          = "http://10.0.2.2:8080/"
+        const val CACHE_DIR_NAME    = "cache"
+        const val DISK_CACHE_SIZE   = 10 * 1024 * 1024; // 10 MB
     }
 
     private val okHttpClient : OkHttpClient =
@@ -41,12 +45,16 @@ class App : Application() {
                         ConnectionErrorType.SERVER_NOT_FOUND -> connectionListener?.onServerIsNotAvailable()
                     }
                 }
+
+                /*override fun onCacheUnavailable(){
+                    connectionListener?.onCacheUnavailable()
+                }*/
             } )
             .build()
 
     val retrofit : Retrofit =
         Retrofit.Builder()
-            .baseUrl(Companion.BASE_URL)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -91,5 +99,12 @@ class App : Application() {
         }
 
         return exist
+    }
+
+    private fun getCache(): Cache {
+        val cacheDir = File( cacheDir, CACHE_DIR_NAME ) // context is null when call
+                                                                 // getCache() from okHttpClient
+
+        return Cache( cacheDir, DISK_CACHE_SIZE.toLong())
     }
 }

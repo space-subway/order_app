@@ -106,4 +106,12 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
             }
         }
     }
+
+    /*override fun onCacheUnavailable() {
+        runOnUiThread {
+            binding.connectionMessage.text = getString(R.string.no_content_available)
+            binding.networkStatusView.visibility = View.VISIBLE
+            binding.navHostFragmentItemDetail.visibility = View.GONE
+        }
+    }*/
 }
