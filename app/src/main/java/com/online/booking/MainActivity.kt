@@ -11,7 +11,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.web.utils.InternetConnectionListener
 import com.online.booking.web.utils.Refreshable
-import java.lang.reflect.InvocationTargetException
 
 class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
@@ -106,12 +105,4 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
             }
         }
     }
-
-    /*override fun onCacheUnavailable() {
-        runOnUiThread {
-            binding.connectionMessage.text = getString(R.string.no_content_available)
-            binding.networkStatusView.visibility = View.VISIBLE
-            binding.navHostFragmentItemDetail.visibility = View.GONE
-        }
-    }*/
 }

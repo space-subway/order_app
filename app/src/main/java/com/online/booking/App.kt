@@ -25,8 +25,8 @@ class App : Application() {
         const val DISK_CACHE_SIZE   = 10 * 1024 * 1024; // 10 MB
     }
 
-    private val okHttpClient : OkHttpClient =
-        OkHttpClient.Builder()
+    private fun buildOkHttpClient() : OkHttpClient {
+        return OkHttpClient.Builder()
             .connectTimeout( 30, TimeUnit.SECONDS )
             .readTimeout( 30, TimeUnit.SECONDS )
             .writeTimeout( 30, TimeUnit.SECONDS )
@@ -46,18 +46,18 @@ class App : Application() {
                     }
                 }
 
-                /*override fun onCacheUnavailable(){
-                    connectionListener?.onCacheUnavailable()
-                }*/
             } )
+            .cache( getCache() )
             .build()
+    }
 
-    val retrofit : Retrofit =
-        Retrofit.Builder()
+    fun buildRetrofit() : Retrofit {
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(okHttpClient)
+            .client(buildOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
 
     var connectionListener:InternetConnectionListener? = null
 
@@ -102,9 +102,7 @@ class App : Application() {
     }
 
     private fun getCache(): Cache {
-        val cacheDir = File( cacheDir, CACHE_DIR_NAME ) // context is null when call
-                                                                 // getCache() from okHttpClient
-
+        val cacheDir = File( cacheDir, CACHE_DIR_NAME )
         return Cache( cacheDir, DISK_CACHE_SIZE.toLong())
     }
 }

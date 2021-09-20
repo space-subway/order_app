@@ -62,7 +62,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
     }
 
     private fun loadItems(){
-        val itemService = (activity?.application as App).retrofit.create(ItemService::class.java)
+        val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
 
         val itemServiceCall = itemService.list()
 

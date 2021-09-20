@@ -90,7 +90,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
     }
 
     private fun loadItem() {
-        val itemService = (activity?.application as App).retrofit.create(ItemService::class.java)
+        val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
         val itemServiceCall = itemService.getItem(itemId!!)
 
         itemServiceCall.enqueue( object : Callback<Item> {
