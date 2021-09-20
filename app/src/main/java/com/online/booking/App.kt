@@ -16,7 +16,10 @@ import java.net.Socket
 import java.util.concurrent.TimeUnit
 
 class App : Application() {
-    val BASE_URL = "http://10.0.2.2:8080/"
+
+    companion object {
+        const val BASE_URL = "http://10.0.2.2:8080/"
+    }
 
     private val okHttpClient : OkHttpClient =
         OkHttpClient.Builder()
@@ -43,7 +46,7 @@ class App : Application() {
 
     val retrofit : Retrofit =
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Companion.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -89,6 +92,4 @@ class App : Application() {
 
         return exist
     }
-
-
 }

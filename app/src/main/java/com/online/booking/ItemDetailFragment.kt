@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.domain.Item
 import com.online.booking.web.ItemService
+import com.online.booking.web.utils.InternetConnectionListener
 import com.online.booking.web.utils.Refreshable
 import retrofit2.Call
 import retrofit2.Callback
@@ -100,11 +101,11 @@ class ItemDetailFragment : Fragment(), Refreshable {
                     updateUI(receivedItem)
                 }
 
-                (this@ItemDetailFragment.activity as MainActivity).onServerResponse( response.code() )
+                (this@ItemDetailFragment.activity as InternetConnectionListener).onServerResponse( response.code() )
             }
 
             override fun onFailure(call: Call<Item>, t: Throwable) {
-                (this@ItemDetailFragment.activity as MainActivity).onServerIsNotAvailable()
+                (this@ItemDetailFragment.activity as InternetConnectionListener).onServerIsNotAvailable()
             }
         })
     }

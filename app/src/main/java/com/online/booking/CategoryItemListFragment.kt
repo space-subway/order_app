@@ -12,6 +12,7 @@ import com.online.booking.databinding.FragmentCategoryItemListBinding
 import com.online.booking.domain.Item
 import com.online.booking.domain.ItemCategory
 import com.online.booking.web.ItemService
+import com.online.booking.web.utils.InternetConnectionListener
 import com.online.booking.web.utils.Refreshable
 import retrofit2.Call
 import retrofit2.Callback
@@ -87,11 +88,11 @@ class CategoryItemListFragment : Fragment(), Refreshable {
                     setupCategoriesAdapter()
                 }
 
-                (this@CategoryItemListFragment.activity as MainActivity).onServerResponse( response.code() )
+                (this@CategoryItemListFragment.activity as InternetConnectionListener).onServerResponse( response.code() )
             }
 
             override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-                (this@CategoryItemListFragment.activity as MainActivity).onServerIsNotAvailable()
+                (this@CategoryItemListFragment.activity as InternetConnectionListener).onServerIsNotAvailable()
             }
 
         } )
