@@ -82,9 +82,9 @@ class ItemListFragment: Fragment() {
         val onClickListener = View.OnClickListener { itemView ->
             var item = itemView.tag as Item
             val bundle = Bundle()
-            bundle.putString(
-                ItemDetailFragment.ARG_ITEM_ID,
-                item.id
+            bundle.putParcelable(
+                ItemDetailFragment.ARG_ITEM,
+                item
             )
             itemView.findNavController().navigate(R.id.show_item_detail, bundle)
         }

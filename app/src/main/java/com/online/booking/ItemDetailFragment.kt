@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.domain.Item
+import com.online.booking.domain.Rating
 import com.online.booking.web.ItemService
 import com.online.booking.web.utils.InternetConnectionListener
 import com.online.booking.web.utils.Refreshable
@@ -16,19 +17,19 @@ import retrofit2.Response
 
 class ItemDetailFragment : Fragment(), Refreshable {
     companion object {
-        const val ARG_ITEM_ID = "item_id"
+        const val ARG_ITEM = "item"
     }
 
-    private var itemId: String? = null
+    private var item: Item? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             if(it.containsKey(
-                    ARG_ITEM_ID
+                    ARG_ITEM
             )){
-                itemId = it.getString(ARG_ITEM_ID)
+                item = it.getParcelable<Item>(ARG_ITEM)
             }
         }
     }
@@ -57,6 +58,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
 
         (activity as MainActivity).showUpToolbar()
 
+        updateUI(this@ItemDetailFragment.item!!)
         loadItem()
     }
 
@@ -70,10 +72,10 @@ class ItemDetailFragment : Fragment(), Refreshable {
             binding.description.text = item.description
         }
 
-        var overrageRating = item.overrageRating()
-        binding.itemRating.text = overrageRating.toString()
+        var overageRating = item.overrageRating()
+        binding.itemRating.text = overageRating.toString()
         //calculate stars
-        var starCount = overrageRating.toInt()
+        var starCount = overageRating.toInt()
         when( starCount ){
             1 -> binding.itemRatingStars.text = "●"
             2 -> binding.itemRatingStars.text = "● ●"
@@ -91,14 +93,22 @@ class ItemDetailFragment : Fragment(), Refreshable {
 
     private fun loadItem() {
         val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
-        val itemServiceCall = itemService.getItem(itemId!!)
+        val itemServiceCall = itemService.getItem(item!!.id)
 
         itemServiceCall.enqueue( object : Callback<Item> {
             override fun onResponse(call: Call<Item>, response: Response<Item>) {
                 if( response.code() == 200 ){
                     val receivedItem = response.body() as Item
 
-                    updateUI(receivedItem)
+                    if(receivedItem.description == null)
+                        this@ItemDetailFragment.item!!.description  = ""
+                    else
+                        this@ItemDetailFragment.item!!.description  = receivedItem.description
+                    
+                    this@ItemDetailFragment.item!!.viewCount    = receivedItem.viewCount
+                    this@ItemDetailFragment.item!!.rating       = receivedItem.rating
+
+                    updateUI( this@ItemDetailFragment.item!! )
                 }
 
                 (this@ItemDetailFragment.activity as InternetConnectionListener).onServerResponse( response.code() )
