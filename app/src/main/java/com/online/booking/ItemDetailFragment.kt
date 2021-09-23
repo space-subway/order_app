@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.domain.Item
-import com.online.booking.domain.Rating
 import com.online.booking.web.ItemService
 import com.online.booking.web.utils.InternetConnectionListener
 import com.online.booking.web.utils.Refreshable
@@ -100,10 +99,10 @@ class ItemDetailFragment : Fragment(), Refreshable {
                 if( response.code() == 200 ){
                     val receivedItem = response.body() as Item
 
-                    if(receivedItem.description == null)
-                        this@ItemDetailFragment.item!!.description  = ""
-                    else
-                        this@ItemDetailFragment.item!!.description  = receivedItem.description
+                    //if(receivedItem.description == null)
+                    //    this@ItemDetailFragment.item!!.description  = ""
+                    //else
+                    this@ItemDetailFragment.item!!.description  = receivedItem.description
                     
                     this@ItemDetailFragment.item!!.viewCount    = receivedItem.viewCount
                     this@ItemDetailFragment.item!!.rating       = receivedItem.rating

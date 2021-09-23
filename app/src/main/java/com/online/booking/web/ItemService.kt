@@ -9,5 +9,5 @@ interface ItemService {
     @GET("item/list")
     fun list(): Call<List<Item>>
     @GET("item/{id}")
-    fun getItem( @Path(value = "id") id : String ): Call<Item>
+    fun getItem( @Path(value = "id") id: String?): Call<Item>
 }

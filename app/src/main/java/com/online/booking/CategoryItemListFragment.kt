@@ -79,7 +79,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
                         if( item.category != null ){
 
                             if( itemsMap[item.category] == null )
-                                itemsMap[item.category] = ArrayList()
+                                itemsMap[item.category!!] = ArrayList()
 
                             itemsMap[item.category]!!.add( item )
                         }
