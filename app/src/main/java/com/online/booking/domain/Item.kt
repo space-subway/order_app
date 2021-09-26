@@ -3,13 +3,14 @@ package com.online.booking.domain
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class Item(
     @SerializedName("id") var id: String?,
     @SerializedName("title") var title: String?,
     @SerializedName("description") var description: String?,
     @SerializedName("descriptionShort") var descriptionShort: String?,
-    @SerializedName("price") var price: Double,
+    @SerializedName("price") var price: BigDecimal,
     @SerializedName("viewCount") var viewCount:  Int,
     @SerializedName("rating") var rating: Rating?,
     @SerializedName("category") var category: ItemCategory?
@@ -19,7 +20,7 @@ data class Item(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readDouble(),
+        BigDecimal.valueOf(parcel.readDouble()),
         parcel.readInt(),
         parcel.readParcelable(Rating.javaClass.classLoader),
         parcel.readParcelable(ItemCategory.javaClass.classLoader)
@@ -30,7 +31,7 @@ data class Item(
         parcel.writeString(title)
         parcel.writeString(description)
         parcel.writeString(descriptionShort)
-        parcel.writeDouble(price)
+        parcel.writeDouble(price.toDouble())
         parcel.writeInt(viewCount)
     }
 

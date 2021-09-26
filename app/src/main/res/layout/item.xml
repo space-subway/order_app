@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height">
 
@@ -30,28 +29,6 @@
             android:layout_marginLeft="@dimen/content_margin_min"
             android:layout_marginRight="@dimen/details_content_margin_right"
             android:lines="2"/>
-
-        <TextView
-            android:id="@+id/rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/short_description"
-            android:layout_marginLeft="@dimen/content_margin_min"
-            android:layout_marginTop="@dimen/content_margin_min"
-            android:layout_alignParentLeft="true"
-            android:textSize="@dimen/details_view_rating_text_size"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/rating_stars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/rating"
-            android:layout_below="@+id/short_description"
-            android:layout_marginLeft="@dimen/content_margin_min"
-            android:layout_marginTop="@dimen/content_margin_min"
-            android:textSize="@dimen/details_view_rating_text_size"
-            android:text="● ● ● ● ●"/>
 
     </RelativeLayout>
 

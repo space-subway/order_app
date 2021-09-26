@@ -16,8 +16,6 @@ class ItemsAdapter(private val items: List<Item>,
         var tittleTextView              : TextView = view.findViewById(R.id.title)
         var priceTextView               : TextView = view.findViewById(R.id.price)
         var shortDescriptionTextView    : TextView = view.findViewById(R.id.short_description)
-        var ratingTextView              : TextView = view.findViewById(R.id.rating)
-        var ratingStarsTextView         : TextView = view.findViewById(R.id.rating_stars)
     }
 
     @NonNull
@@ -32,21 +30,6 @@ class ItemsAdapter(private val items: List<Item>,
         holder.tittleTextView.text              = item.title
         holder.priceTextView.text               = "$" + item.price
         holder.shortDescriptionTextView.text    = item.descriptionShort
-        var overrageRating = item.overrageRating()
-        holder.ratingTextView.text              = overrageRating.toString()
-        //calculate stars
-        var starCount = overrageRating.toInt()
-        when( starCount ){
-            1 -> holder.ratingStarsTextView.text = "●"
-            2 -> holder.ratingStarsTextView.text = "● ●"
-            3 -> holder.ratingStarsTextView.text = "● ● ●"
-            4 -> holder.ratingStarsTextView.text = "● ● ● ●"
-            5 -> holder.ratingStarsTextView.text = "● ● ● ● ●"
-            else -> {
-                holder.ratingTextView.visibility = View.GONE
-                holder.ratingStarsTextView.visibility = View.GONE
-            }
-        }
 
         holder.itemView.tag = item
         holder.itemView.setOnClickListener(onClickListener)
