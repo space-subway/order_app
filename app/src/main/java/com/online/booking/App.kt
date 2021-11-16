@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 class App : Application() {
 
     companion object {
-        const val BASE_URL          = "http://10.0.2.2:8080/"
+        const val BASE_URL          = "https://obscure-cove-65917.herokuapp.com"
         const val CACHE_DIR_NAME    = "cache"
         const val DISK_CACHE_SIZE   = 10 * 1024 * 1024; // 10 MB
     }
@@ -86,7 +86,10 @@ class App : Application() {
         var exist = false
 
         val ip = BASE_URL.split(":")[1].removePrefix("//")
-        val port = BASE_URL.split(":")[2].removeSuffix("/").toInt()
+        var port = 80
+        if( BASE_URL.split(":").size > 2 ){
+            port = BASE_URL.split(":")[2].removeSuffix("/").toInt()
+        }
 
         try {
             val sockaddr = InetSocketAddress(ip, port)
