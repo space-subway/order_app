@@ -6,6 +6,7 @@
 
     <string name="no_internet">No internet connection</string>
     <string name="no_server">Server is not available</string>
+    <string name="page_not_found">Ошибка: 404\nПопробуйте еще раз...</string>
 
     <string name="add_product_tittle_hint">Введите наименование...</string>
     <string name="add_product_price_hint">Введите цену...</string>

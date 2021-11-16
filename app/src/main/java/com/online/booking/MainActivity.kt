@@ -102,6 +102,11 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
                     binding.networkStatusView.visibility = View.GONE
                     binding.navHostFragmentItemDetail.visibility = View.VISIBLE
                 }
+                404 -> {
+                    binding.connectionMessage.text = getString(R.string.page_not_found)
+                    binding.networkStatusView.visibility = View.VISIBLE
+                    binding.navHostFragmentItemDetail.visibility = View.GONE
+                }
             }
         }
     }

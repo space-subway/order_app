@@ -62,6 +62,8 @@ class CategoryItemListFragment : Fragment(), Refreshable {
     }
 
     private fun loadItems(){
+        binding.progressBar.visibility = View.VISIBLE
+
         val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
 
         val itemServiceCall = itemService.list()
@@ -87,6 +89,8 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
                     setupCategoriesAdapter()
                 }
+
+                binding.progressBar.visibility = View.GONE
 
                 (this@CategoryItemListFragment.activity as InternetConnectionListener).onServerResponse( response.code() )
             }

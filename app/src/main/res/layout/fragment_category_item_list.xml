@@ -27,4 +27,12 @@
         android:layout_below="@+id/tabLayout"
         />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/progressbar_with"
+        android:minWidth="@dimen/progressbar_with"
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>
