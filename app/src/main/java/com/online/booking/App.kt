@@ -5,8 +5,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import com.online.booking.web.utils.InternetConnectionListener
-import com.online.booking.web.utils.NetworkConnectionInterceptor
+import com.online.booking.utils.InternetConnectionListener
+import com.online.booking.utils.NetworkConnectionInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -59,7 +59,7 @@ class App : Application() {
             .build()
     }
 
-    var connectionListener:InternetConnectionListener? = null
+    var connectionListener: InternetConnectionListener? = null
 
     private fun isInternetAvailable(): Boolean {
         val connectivityManager = getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager

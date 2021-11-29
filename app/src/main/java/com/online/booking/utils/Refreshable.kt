@@ -1,4 +1,4 @@
-package com.online.booking.web.utils
+package com.online.booking.utils
 
 interface Refreshable {
     fun refresh()

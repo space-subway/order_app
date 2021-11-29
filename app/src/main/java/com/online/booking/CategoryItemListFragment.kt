@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.online.booking.databinding.FragmentCategoryItemListBinding
-import com.online.booking.domain.Item
-import com.online.booking.domain.ItemCategory
-import com.online.booking.web.ItemService
-import com.online.booking.web.utils.InternetConnectionListener
-import com.online.booking.web.utils.Refreshable
+import com.online.booking.data.model.Item
+import com.online.booking.data.model.ItemCategory
+import com.online.booking.data.api.ItemService
+import com.online.booking.utils.InternetConnectionListener
+import com.online.booking.utils.Refreshable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

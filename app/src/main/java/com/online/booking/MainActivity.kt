@@ -9,8 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.online.booking.databinding.ActivityMainBinding
-import com.online.booking.web.utils.InternetConnectionListener
-import com.online.booking.web.utils.Refreshable
+import com.online.booking.utils.InternetConnectionListener
+import com.online.booking.utils.Refreshable
 
 class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
 
-        if( navHostFragment.childFragmentManager.fragments[0] is Refreshable ){
+        if( navHostFragment.childFragmentManager.fragments[0] is Refreshable){
             val refreshableFragment = navHostFragment.childFragmentManager.fragments[0] as Refreshable
             refreshableFragment.refresh()
         }

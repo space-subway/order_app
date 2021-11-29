@@ -1,4 +1,4 @@
-package com.online.booking.domain
+package com.online.booking.data.model
 
 import android.os.Parcel
 import android.os.Parcelable

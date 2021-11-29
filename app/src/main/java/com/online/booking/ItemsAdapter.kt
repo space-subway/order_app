@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.online.booking.domain.Item
+import com.online.booking.data.model.Item
 
 class ItemsAdapter(private val items: List<Item>,
                    private val onClickListener: View.OnClickListener

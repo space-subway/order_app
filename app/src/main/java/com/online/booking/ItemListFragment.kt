@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.online.booking.databinding.FragmentItemListBinding
-import com.online.booking.domain.Item
+import com.online.booking.data.model.Item
 
 class ItemListFragment: Fragment() {
     private lateinit var itemAdapter : ItemsAdapter

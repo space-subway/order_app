@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.online.booking.databinding.FragmentItemDetailBinding
-import com.online.booking.domain.Item
-import com.online.booking.web.ItemService
-import com.online.booking.web.utils.InternetConnectionListener
-import com.online.booking.web.utils.Refreshable
+import com.online.booking.data.model.Item
+import com.online.booking.data.api.ItemService
+import com.online.booking.utils.InternetConnectionListener
+import com.online.booking.utils.Refreshable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,7 +61,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
         loadItem()
     }
 
-    private fun updateUI( item : Item ){
+    private fun updateUI( item : Item){
         binding.itemPrice.text = "$" + item.price
         binding.itemTitle.text = item.title
         binding.shortDescription.text = item.descriptionShort

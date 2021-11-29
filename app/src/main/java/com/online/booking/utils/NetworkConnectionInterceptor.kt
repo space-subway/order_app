@@ -1,4 +1,4 @@
-package com.online.booking.web.utils
+package com.online.booking.utils
 
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -13,7 +13,7 @@ abstract class NetworkConnectionInterceptor : Interceptor {
 
     abstract fun isServerFound(): Boolean
 
-    abstract fun onConnectionUnavailable( errType: ConnectionErrorType )
+    abstract fun onConnectionUnavailable( errType: ConnectionErrorType)
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
@@ -34,9 +34,9 @@ abstract class NetworkConnectionInterceptor : Interceptor {
         }
 
         if( !isInternetAvailable() ){
-            onConnectionUnavailable( ConnectionErrorType.CONNECTION_IS_OFF );
+            onConnectionUnavailable(ConnectionErrorType.CONNECTION_IS_OFF);
         } else if( !isServerFound() ){
-            onConnectionUnavailable( ConnectionErrorType.SERVER_NOT_FOUND )
+            onConnectionUnavailable(ConnectionErrorType.SERVER_NOT_FOUND)
         }
 
         return chain.proceed( request )

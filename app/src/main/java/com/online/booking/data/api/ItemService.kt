@@ -1,6 +1,6 @@
-package com.online.booking.web
+package com.online.booking.data.api
 
-import com.online.booking.domain.Item
+import com.online.booking.data.model.Item
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
