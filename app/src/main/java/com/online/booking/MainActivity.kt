@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (application as App).connectionListener = this
+        //(application as App).connectionListener = this
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
     }
 
     override fun onPause() {
-        (application as App).connectionListener = null
+        //(application as App).connectionListener = null
         super.onPause()
     }
 

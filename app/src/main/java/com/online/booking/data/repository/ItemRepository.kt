@@ -1,17 +1,11 @@
 package com.online.booking.data.repository
 
-import com.online.booking.data.api.ItemService
-import com.online.booking.data.model.Item
-import retrofit2.Call
+import com.online.booking.data.api.ApiHelper
 
-class ItemRepository(private val itemService : ItemService) {
+class ItemRepository( private val apiHelper: ApiHelper ) {
 
-    fun getItems(): Call<List<Item>> {
-        return itemService.list()
-    }
+    suspend fun getItems() = apiHelper.getItems()
 
-    fun getItem( id : String ): Call<Item> {
-        return itemService.getItem( id )
-    }
+    suspend fun getItem( id: String? ) = apiHelper.getItem( id )
 
 }

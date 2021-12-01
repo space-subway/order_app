@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.online.booking.data.api.ApiHelper
+import com.online.booking.data.api.RetrofitBuilder
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.data.model.Item
-import com.online.booking.data.api.ItemService
-import com.online.booking.utils.InternetConnectionListener
+import com.online.booking.data.repository.ItemRepository
 import com.online.booking.utils.Refreshable
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ItemDetailFragment : Fragment(), Refreshable {
     companion object {
@@ -58,7 +60,11 @@ class ItemDetailFragment : Fragment(), Refreshable {
         (activity as MainActivity).showUpToolbar()
 
         updateUI(this@ItemDetailFragment.item!!)
-        loadItem()
+
+        GlobalScope.launch ( Dispatchers.Main ) {
+            loadItem()
+        }
+
     }
 
     private fun updateUI( item : Item){
@@ -90,8 +96,22 @@ class ItemDetailFragment : Fragment(), Refreshable {
         if( item.viewCount != null ) binding.itemViewCount.text = item.viewCount.toString() + " Views"
     }
 
-    private fun loadItem() {
-        val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
+    private suspend fun loadItem() {
+        val itemRepository = ItemRepository( ApiHelper(RetrofitBuilder.apiService) )
+
+        val item = withContext(Dispatchers.IO) {
+            itemRepository.getItem( item!!.id )
+        }
+
+        //update ui
+        this@ItemDetailFragment.item!!.description  = item.description
+
+        this@ItemDetailFragment.item!!.viewCount    = item.viewCount
+        this@ItemDetailFragment.item!!.rating       = item.rating
+
+        updateUI( this@ItemDetailFragment.item!! )
+
+        /*val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
         val itemServiceCall = itemService.getItem(item!!.id)
 
         itemServiceCall.enqueue( object : Callback<Item> {
@@ -116,10 +136,12 @@ class ItemDetailFragment : Fragment(), Refreshable {
             override fun onFailure(call: Call<Item>, t: Throwable) {
                 (this@ItemDetailFragment.activity as InternetConnectionListener).onServerIsNotAvailable()
             }
-        })
+        })*/
     }
 
     override fun refresh() {
-        loadItem()
+        GlobalScope.launch ( Dispatchers.Main ) {
+            loadItem()
+        }
     }
 }

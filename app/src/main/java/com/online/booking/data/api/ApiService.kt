@@ -1,13 +1,15 @@
 package com.online.booking.data.api
 
 import com.online.booking.data.model.Item
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface ItemService {
+interface ApiService {
+
     @GET("item/list")
-    fun list(): Call<List<Item>>
+    suspend fun getItems(): List<Item>
+
     @GET("item/{id}")
-    fun getItem( @Path(value = "id") id: String?): Call<Item>
+    suspend fun getItem( @Path(value = "id") id: String?): Item
+
 }

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 
 class App : Application() {
 
-    companion object {
+    /*companion object {
         const val BASE_URL          = "https://obscure-cove-65917.herokuapp.com"
         const val CACHE_DIR_NAME    = "cache"
         const val DISK_CACHE_SIZE   = 10 * 1024 * 1024; // 10 MB
@@ -107,5 +107,5 @@ class App : Application() {
     private fun getCache(): Cache {
         val cacheDir = File( cacheDir, CACHE_DIR_NAME )
         return Cache( cacheDir, DISK_CACHE_SIZE.toLong())
-    }
+    }*/
 }

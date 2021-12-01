@@ -8,15 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.online.booking.databinding.FragmentCategoryItemListBinding
+import com.online.booking.data.api.ApiHelper
+import com.online.booking.data.api.RetrofitBuilder
 import com.online.booking.data.model.Item
 import com.online.booking.data.model.ItemCategory
-import com.online.booking.data.api.ItemService
-import com.online.booking.utils.InternetConnectionListener
+import com.online.booking.data.repository.ItemRepository
+import com.online.booking.databinding.FragmentCategoryItemListBinding
 import com.online.booking.utils.Refreshable
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CategoryItemListFragment : Fragment(), Refreshable {
 
@@ -40,7 +42,9 @@ class CategoryItemListFragment : Fragment(), Refreshable {
     override fun onResume() {
         super.onResume()
 
-        loadItems()
+        GlobalScope.launch ( Dispatchers.Main ) {
+            loadItems()
+        }
     }
 
     override fun onDestroyView() {
@@ -61,14 +65,35 @@ class CategoryItemListFragment : Fragment(), Refreshable {
         }.attach()
     }
 
-    private fun loadItems(){
+    private suspend fun loadItems(){
         binding.progressBar.visibility = View.VISIBLE
 
-        val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
+        val itemRepository = ItemRepository( ApiHelper(RetrofitBuilder.apiService) )
 
-        val itemServiceCall = itemService.list()
+        val items = withContext(Dispatchers.IO) {
+            itemRepository.getItems()
+        }
 
-        itemServiceCall.enqueue( object : Callback<List<Item>> {
+        //update ui
+        binding.progressBar.visibility = View.GONE
+        itemsMap.clear()
+
+        var it = items.listIterator()
+        while( it.hasNext() ){
+            var item = it.next()
+            if( item.category != null ){
+
+                if( itemsMap[item.category] == null )
+                    itemsMap[item.category!!] = ArrayList()
+
+                itemsMap[item.category]!!.add( item )
+            }
+        }
+
+        setupCategoriesAdapter()
+
+        //setup observer
+        /*itemRepository.getItems().enqueue( object : Callback<List<Item>> {
             override fun onResponse(call: Call<List<Item>>, response: Response<List<Item>>) {
                 if(response.code() == 200){
                     val received = response.body()!!.asReversed()
@@ -99,11 +124,13 @@ class CategoryItemListFragment : Fragment(), Refreshable {
                 (this@CategoryItemListFragment.activity as InternetConnectionListener).onServerIsNotAvailable()
             }
 
-        } )
+        } )*/
     }
 
     override fun refresh() {
-        loadItems()
+        GlobalScope.launch ( Dispatchers.Main ) {
+            loadItems()
+        }
     }
 
     class ViewPagerAdapter(activity: AppCompatActivity, private val itemsMap: MutableMap<ItemCategory, MutableList<Item>> ): FragmentStateAdapter( activity ){
