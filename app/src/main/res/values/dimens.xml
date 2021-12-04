@@ -25,6 +25,7 @@
     <dimen name="details_view_rating_text_size">18dp</dimen>
     <dimen name="details_view_description_text_size">21dp</dimen>
     <dimen name="content_margin">24dp</dimen>
+    <dimen name="content_margin_mid">16dp</dimen>
     <dimen name="content_margin_min">8dp</dimen>
     <dimen name="details_content_margin_right">100dp</dimen>
 

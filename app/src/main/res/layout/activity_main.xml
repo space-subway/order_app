@@ -23,8 +23,9 @@
             android:id="@+id/connection_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
-            android:layout_margin="@dimen/content_margin_min"/>
+            android:layout_margin="@dimen/content_margin_mid"/>
 
         <ImageButton
             android:id="@+id/connection_try_again"

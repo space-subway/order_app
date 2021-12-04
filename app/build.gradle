@@ -45,9 +45,6 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.4.0'
 
-    // picasso (url to img)
-    implementation "com.squareup.picasso:picasso:2.71828"
-
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
     implementation "com.squareup.retrofit2:converter-gson:2.6.0" // json to dataclass
@@ -55,6 +52,9 @@ dependencies {
 
     // corutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    //LifeCycle
+    implementation 'android.arch.lifecycle:extensions:2.3.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'

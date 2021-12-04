@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.online.booking.data.api.ApiService
 import com.online.booking.utils.InternetConnectionListener
 import com.online.booking.utils.NetworkConnectionInterceptor
 import okhttp3.Cache
@@ -107,5 +108,7 @@ class App : Application() {
     private fun getCache(): Cache {
         val cacheDir = File( cacheDir, CACHE_DIR_NAME )
         return Cache( cacheDir, DISK_CACHE_SIZE.toLong())
-    }*/
+    }
+
+    val apiService: ApiService = buildRetrofit().create(ApiService::class.java)*/
 }

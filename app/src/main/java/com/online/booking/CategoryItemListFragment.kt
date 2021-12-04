@@ -6,21 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.online.booking.data.api.ApiHelper
-import com.online.booking.data.api.RetrofitBuilder
 import com.online.booking.data.model.Item
 import com.online.booking.data.model.ItemCategory
-import com.online.booking.data.repository.ItemRepository
+import com.online.booking.data.viewmodel.ItemViewModel
 import com.online.booking.databinding.FragmentCategoryItemListBinding
 import com.online.booking.utils.Refreshable
+import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CategoryItemListFragment : Fragment(), Refreshable {
+
+    //lateinit var viewModel: ItemViewModel
 
     private var itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
@@ -65,32 +68,47 @@ class CategoryItemListFragment : Fragment(), Refreshable {
         }.attach()
     }
 
-    private suspend fun loadItems(){
-        binding.progressBar.visibility = View.VISIBLE
+    private fun loadItems(){
 
-        val itemRepository = ItemRepository( ApiHelper(RetrofitBuilder.apiService) )
+        val viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
 
-        val items = withContext(Dispatchers.IO) {
-            itemRepository.getItems()
-        }
+        viewModel.getItems().observe(this, { resource ->
+            resource?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        //update ui
+                        binding.progressBar.visibility = View.GONE
+                        itemsMap.clear()
 
-        //update ui
-        binding.progressBar.visibility = View.GONE
-        itemsMap.clear()
+                        resource.data?.let {
 
-        var it = items.listIterator()
-        while( it.hasNext() ){
-            var item = it.next()
-            if( item.category != null ){
+                            var iterator = it.listIterator()
+                            while( iterator.hasNext() ){
+                                var item = iterator.next()
+                                if( item.category != null ){
 
-                if( itemsMap[item.category] == null )
-                    itemsMap[item.category!!] = ArrayList()
+                                    if( itemsMap[item.category] == null )
+                                        itemsMap[item.category!!] = ArrayList()
 
-                itemsMap[item.category]!!.add( item )
+                                    itemsMap[item.category]!!.add( item )
+                                }
+                            }
+
+                            setupCategoriesAdapter()
+
+                        }
+                    }
+                    Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        (activity as MainActivity).onNetworkError( resource.message )
+
+                    }
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                }
             }
-        }
-
-        setupCategoriesAdapter()
+        })
 
         //setup observer
         /*itemRepository.getItems().enqueue( object : Callback<List<Item>> {
