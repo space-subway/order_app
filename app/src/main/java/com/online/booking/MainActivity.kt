@@ -11,9 +11,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.utils.InternetConnectionListener
 import com.online.booking.utils.Refreshable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
@@ -26,8 +23,6 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //(application as App).connectionListener = this
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -78,11 +73,6 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
-    }
-
-    override fun onPause() {
-        //(application as App).connectionListener = null
-        super.onPause()
     }
 
     override fun onInternetUnavailable() {

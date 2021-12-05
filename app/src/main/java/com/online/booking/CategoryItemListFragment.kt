@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,8 +20,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class CategoryItemListFragment : Fragment(), Refreshable {
-
-    //lateinit var viewModel: ItemViewModel
 
     private var itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
@@ -110,39 +106,6 @@ class CategoryItemListFragment : Fragment(), Refreshable {
             }
         })
 
-        //setup observer
-        /*itemRepository.getItems().enqueue( object : Callback<List<Item>> {
-            override fun onResponse(call: Call<List<Item>>, response: Response<List<Item>>) {
-                if(response.code() == 200){
-                    val received = response.body()!!.asReversed()
-
-                    itemsMap.clear()
-
-                    var it = received.listIterator()
-                    while( it.hasNext() ){
-                        var item = it.next()
-                        if( item.category != null ){
-
-                            if( itemsMap[item.category] == null )
-                                itemsMap[item.category!!] = ArrayList()
-
-                            itemsMap[item.category]!!.add( item )
-                        }
-                    }
-
-                    setupCategoriesAdapter()
-                }
-
-                binding.progressBar.visibility = View.GONE
-
-                (this@CategoryItemListFragment.activity as InternetConnectionListener).onServerResponse( response.code() )
-            }
-
-            override fun onFailure(call: Call<List<Item>>, t: Throwable) {
-                (this@CategoryItemListFragment.activity as InternetConnectionListener).onServerIsNotAvailable()
-            }
-
-        } )*/
     }
 
     override fun refresh() {

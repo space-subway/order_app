@@ -6,20 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.online.booking.data.api.ApiHelper
-import com.online.booking.data.api.ApiService
-import com.online.booking.data.api.RetrofitBuilder
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.data.model.Item
-import com.online.booking.data.repository.ItemRepository
 import com.online.booking.data.viewmodel.ItemViewModel
-import com.online.booking.utils.InternetConnectionListener
 import com.online.booking.utils.Refreshable
 import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ItemDetailFragment : Fragment(), Refreshable {
     companion object {
