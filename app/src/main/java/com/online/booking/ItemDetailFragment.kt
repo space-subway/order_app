@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.online.booking.data.api.ApiHelper
 import com.online.booking.data.api.ApiService
 import com.online.booking.data.api.RetrofitBuilder
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.data.model.Item
 import com.online.booking.data.repository.ItemRepository
+import com.online.booking.data.viewmodel.ItemViewModel
 import com.online.booking.utils.InternetConnectionListener
 import com.online.booking.utils.Refreshable
+import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -98,51 +101,37 @@ class ItemDetailFragment : Fragment(), Refreshable {
         if( item.viewCount != null ) binding.itemViewCount.text = item.viewCount.toString() + " Views"
     }
 
-    private suspend fun loadItem() {
-        val itemRepository = ItemRepository(
-            ApiHelper(
-                RetrofitBuilder.apiService
-            )
-        )
+    private fun loadItem() {
 
-        val item = withContext(Dispatchers.IO) {
-            itemRepository.getItem( item!!.id )
-        }
+        val viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
 
-        //update ui
-        this@ItemDetailFragment.item!!.description  = item.description
+        viewModel.getItem( item!!.id ).observe(this, { resource ->
+            resource?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        resource.data?.let {
 
-        this@ItemDetailFragment.item!!.viewCount    = item.viewCount
-        this@ItemDetailFragment.item!!.rating       = item.rating
+                            //update ui
+                            this@ItemDetailFragment.item!!.description  = it.description
 
-        updateUI( this@ItemDetailFragment.item!! )
+                            this@ItemDetailFragment.item!!.viewCount    = it.viewCount
+                            this@ItemDetailFragment.item!!.rating       = it.rating
 
-        /*val itemService = (activity?.application as App).buildRetrofit().create(ItemService::class.java)
-        val itemServiceCall = itemService.getItem(item!!.id)
+                            updateUI( this@ItemDetailFragment.item!! )
 
-        itemServiceCall.enqueue( object : Callback<Item> {
-            override fun onResponse(call: Call<Item>, response: Response<Item>) {
-                if( response.code() == 200 ){
-                    val receivedItem = response.body() as Item
+                        }
+                    }
+                    Status.ERROR -> {
+                        (activity as MainActivity).onNetworkError( resource.message )
 
-                    //if(receivedItem.description == null)
-                    //    this@ItemDetailFragment.item!!.description  = ""
-                    //else
-                    this@ItemDetailFragment.item!!.description  = receivedItem.description
-                    
-                    this@ItemDetailFragment.item!!.viewCount    = receivedItem.viewCount
-                    this@ItemDetailFragment.item!!.rating       = receivedItem.rating
+                    }
+                    Status.LOADING -> {
 
-                    updateUI( this@ItemDetailFragment.item!! )
+                    }
                 }
-
-                (this@ItemDetailFragment.activity as InternetConnectionListener).onServerResponse( response.code() )
             }
+        })
 
-            override fun onFailure(call: Call<Item>, t: Throwable) {
-                (this@ItemDetailFragment.activity as InternetConnectionListener).onServerIsNotAvailable()
-            }
-        })*/
     }
 
     override fun refresh() {
