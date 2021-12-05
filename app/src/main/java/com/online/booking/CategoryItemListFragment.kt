@@ -18,10 +18,11 @@ import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class CategoryItemListFragment : Fragment(), Refreshable {
-
-    private var itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
     private var _binding: FragmentCategoryItemListBinding? = null
 
@@ -51,7 +52,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
         super.onDestroyView()
     }
 
-    private fun setupCategoriesAdapter(){
+    private fun setupCategoriesAdapter( itemsMap: SortedMap<ItemCategory, MutableList<Item>> ){
         var categoryTab = binding.tabLayout
 
         var viewPager   = binding.tabViewpager
@@ -74,7 +75,8 @@ class CategoryItemListFragment : Fragment(), Refreshable {
                     Status.SUCCESS -> {
                         //update ui
                         binding.progressBar.visibility = View.GONE
-                        itemsMap.clear()
+
+                        val itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
                         resource.data?.let {
 
@@ -90,7 +92,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
                                 }
                             }
 
-                            setupCategoriesAdapter()
+                            setupCategoriesAdapter( itemsMap.toSortedMap { t, t2 -> t.name.compareTo(t2.name) } )
 
                         }
                     }
