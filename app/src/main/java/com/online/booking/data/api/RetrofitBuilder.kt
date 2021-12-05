@@ -22,44 +22,38 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitBuilder {
 
-    //companion object {
-        const val BASE_URL = "https://obscure-cove-65917.herokuapp.com"
-        const val CACHE_DIR_NAME = "cache"
-        const val DISK_CACHE_SIZE = 10 * 1024 * 1024; // 10 MB
-    //}
+    const val BASE_URL = "https://obscure-cove-65917.herokuapp.com"
+    //const val CACHE_DIR_NAME = "cache"
+    //const val DISK_CACHE_SIZE = 10 * 1024 * 1024; // 10 MB
 
-     /*private fun buildOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(object : NetworkConnectionInterceptor() {
-                override fun isInternetAvailable(): Boolean {
-                    return this@RetrofitBuilder.isInternetAvailable()
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        /*.addInterceptor(object : NetworkConnectionInterceptor() {
+            override fun isInternetAvailable(): Boolean {
+                return this@RetrofitBuilder.isInternetAvailable()
+            }
+
+            override fun isServerFound(): Boolean {
+                return this@RetrofitBuilder.isServerFound()
+            }
+
+            override fun onConnectionUnavailable(errType: ConnectionErrorType) {
+                when (errType) {
+                    ConnectionErrorType.CONNECTION_IS_OFF -> connectionListener.onInternetUnavailable()
+                    ConnectionErrorType.SERVER_NOT_FOUND -> connectionListener.onServerIsNotAvailable()
                 }
+            }
 
-                override fun isServerFound(): Boolean {
-                    return this@RetrofitBuilder.isServerFound()
-                }
-
-                override fun onConnectionUnavailable(errType: ConnectionErrorType) {
-                    //GlobalScope.launch (Dispatchers.Main){
-                        when (errType) {
-                            ConnectionErrorType.CONNECTION_IS_OFF -> connectionListener.onInternetUnavailable()
-                            ConnectionErrorType.SERVER_NOT_FOUND -> connectionListener.onServerIsNotAvailable()
-                        }
-                    //}
-                }
-
-            })
-            .cache(getCache())
-            .build()
-    }*/
+        })
+        .cache(getCache())*/
+        .build()
 
     private fun buildRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            //.client(buildOkHttpClient())
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
