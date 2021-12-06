@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitBuilder {
 
-    const val BASE_URL = "https://obscure-cove-65917.herokuapp.com"
+    private const val BASE_URL = "https://obscure-cove-65917.herokuapp.com"
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)

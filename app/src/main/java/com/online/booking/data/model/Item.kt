@@ -49,17 +49,17 @@ data class Item(
         }
     }
 
-     fun overrageRating() : Double {
-        var overrageRating = 0.0
+     fun overageRating() : Double {
+        var overageRating = 0.0
         if( rating != null ) {
             var divider = rating!!.oneStarCount + rating!!.twoStarCount + rating!!.threeStarCount + rating!!.fourStarCount + rating!!.fiveStarCount
-            if( divider == 0 ){
-                overrageRating = 0.0
+            overageRating = if( divider == 0 ){
+                0.0
             } else {
-                overrageRating = (( rating!!.oneStarCount + 2 * rating!!.twoStarCount + 3 * rating!!.threeStarCount + 4 * rating!!.fourStarCount + 5 * rating!!.fiveStarCount ) / divider).toDouble()
+                (( rating!!.oneStarCount + 2 * rating!!.twoStarCount + 3 * rating!!.threeStarCount + 4 * rating!!.fourStarCount + 5 * rating!!.fiveStarCount ) / divider).toDouble()
             }
         }
 
-        return overrageRating
+        return overageRating
     }
 }

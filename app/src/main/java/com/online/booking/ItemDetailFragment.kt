@@ -76,7 +76,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
             binding.description.text = item.description
         }
 
-        var overageRating = item.overrageRating()
+        var overageRating = item.overageRating()
         binding.itemRating.text = overageRating.toString()
         //calculate stars
         var starCount = overageRating.toInt()
