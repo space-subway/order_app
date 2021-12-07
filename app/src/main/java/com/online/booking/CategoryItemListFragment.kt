@@ -71,12 +71,13 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
         viewModel.getItems().observe(this, { resource ->
             resource?.let { resource ->
+
+                val itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
+
                 when (resource.status) {
                     Status.SUCCESS -> {
                         //update ui
                         binding.progressBar.visibility = View.GONE
-
-                        val itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
                         resource.data?.let {
 
@@ -98,7 +99,8 @@ class CategoryItemListFragment : Fragment(), Refreshable {
                     }
                     Status.ERROR -> {
                         binding.progressBar.visibility = View.GONE
-                        (activity as MainActivity).onNetworkError( resource.message )
+
+                        if( resource.data == null ) (activity as MainActivity).onNetworkError( resource.message )
 
                     }
                     Status.LOADING -> {

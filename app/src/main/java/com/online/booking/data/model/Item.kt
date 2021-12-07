@@ -2,21 +2,29 @@ package com.online.booking.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
+import com.online.booking.data.model.Item.CREATOR.ID
+import com.online.booking.data.model.Item.CREATOR.TABLE_NAME
 import java.math.BigDecimal
 
+@Entity(
+    tableName = TABLE_NAME,
+    indices = [Index(value = [ID], unique = true)]
+)
 data class Item(
-    @SerializedName("id") var id: String?,
-    @SerializedName("title") var title: String?,
-    @SerializedName("description") var description: String?,
-    @SerializedName("descriptionShort") var descriptionShort: String?,
-    @SerializedName("price") var price: BigDecimal,
-    @SerializedName("viewCount") var viewCount:  Int,
-    @SerializedName("rating") var rating: Rating?,
-    @SerializedName("category") var category: ItemCategory?
+    @SerializedName(ID) @PrimaryKey @ColumnInfo(name = ID) var id: String,
+    @SerializedName(TITLE) @ColumnInfo(name = TITLE) var title: String?,
+    @SerializedName(DESCRIPTION) @ColumnInfo(name = DESCRIPTION) var description: String?,
+    @SerializedName(DESCRIPTION_SHORT) @ColumnInfo(name = DESCRIPTION_SHORT) var descriptionShort: String?,
+    @SerializedName(PRICE) @ColumnInfo(name = PRICE) var price: BigDecimal,
+    @SerializedName(VIEW_COUNT) @ColumnInfo(name = VIEW_COUNT) var viewCount:  Int,
+    @SerializedName(RATING) @Embedded( prefix = "rating_" ) var rating: Rating?,
+    @SerializedName(CATEGORY) @ColumnInfo(name = CATEGORY) var category: ItemCategory?
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
+        parcel.readString()!!,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -40,6 +48,17 @@ data class Item(
     }
 
     companion object CREATOR : Parcelable.Creator<Item> {
+
+        const val TABLE_NAME        = "item"
+        const val ID                = "id"
+        const val TITLE             = "title"
+        const val DESCRIPTION       = "description"
+        const val DESCRIPTION_SHORT = "descriptionShort"
+        const val PRICE             = "price"
+        const val VIEW_COUNT        = "viewCount"
+        const val RATING            = "rating"
+        const val CATEGORY          = "category"
+
         override fun createFromParcel(parcel: Parcel): Item {
             return Item(parcel)
         }
