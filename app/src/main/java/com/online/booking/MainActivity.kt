@@ -9,10 +9,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.online.booking.databinding.ActivityMainBinding
-import com.online.booking.utils.InternetConnectionListener
 import com.online.booking.utils.Refreshable
 
-class MainActivity : AppCompatActivity(), InternetConnectionListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -75,34 +74,7 @@ class MainActivity : AppCompatActivity(), InternetConnectionListener {
         super.onDestroy()
     }
 
-    override fun onInternetUnavailable() {
-        binding.connectionMessage.text = getString(R.string.no_internet)
-        binding.networkStatusView.visibility = View.VISIBLE
-        binding.navHostFragmentItemDetail.visibility = View.GONE
-    }
-
-    override fun onServerIsNotAvailable(){
-        binding.connectionMessage.text = getString(R.string.no_server)
-        binding.networkStatusView.visibility = View.VISIBLE
-        binding.navHostFragmentItemDetail.visibility = View.GONE
-    }
-
-    override fun onServerResponse(code: Int) {
-        when( code ) {
-            200 -> {
-                //hide error view and show recycler list view
-                binding.networkStatusView.visibility = View.GONE
-                binding.navHostFragmentItemDetail.visibility = View.VISIBLE
-            }
-            404 -> {
-                binding.connectionMessage.text = getString(R.string.page_not_found)
-                binding.networkStatusView.visibility = View.VISIBLE
-                binding.navHostFragmentItemDetail.visibility = View.GONE
-            }
-        }
-    }
-
-    override fun onNetworkError(message: String?) {
+    fun onNetworkError(message: String?) {
         binding.connectionMessage.text = message
         binding.networkStatusView.visibility = View.VISIBLE
         binding.navHostFragmentItemDetail.visibility = View.GONE
