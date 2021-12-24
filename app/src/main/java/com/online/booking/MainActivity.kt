@@ -1,6 +1,8 @@
 package com.online.booking
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -37,6 +39,26 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.download_all_items -> {
+            //TODO implement download all items
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
 
     fun showUpToolbar(){
