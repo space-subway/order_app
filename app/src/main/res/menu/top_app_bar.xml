@@ -4,7 +4,6 @@
     <item
         android:id="@+id/download_all_items"
         android:icon="@drawable/ic_baseline_cloud_download_24"
-        android:iconTint="@android:color/white"
         app:showAsAction="ifRoom"
         android:contentDescription="downloadItems"
         android:title="downloadItems" />

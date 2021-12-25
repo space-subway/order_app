@@ -66,6 +66,7 @@
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/top_app_bar"
             app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIconTint="@android:color/white"
             style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -5,13 +5,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.online.booking.data.viewmodel.ItemViewModel
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.utils.Refreshable
+import com.online.booking.utils.Status
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,10 +51,41 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.download_all_items -> {
-            //TODO implement download all items
+
+            val viewModel = ViewModelProviders.of( this ).get( ItemViewModel::class.java )
+
+            val scope = CoroutineScope( Job() + Dispatchers.Main )
+            val job = scope.launch {
+                viewModel.getItems().observe( this@MainActivity, { resource ->
+                    resource?.let {
+                        when( resource.status ){
+                            Status.SUCCESS -> {
+                                val iterator = resource.data?.listIterator()
+                                if (iterator != null) {
+                                    while( iterator.hasNext() ){
+
+                                        val item = iterator.next()
+                                        scope.launch {
+                                            viewModel.getItem( item.id )
+                                        }
+
+                                    }
+                                }
+                                //TODO calculate progress of loaded items
+                            }
+                            Status.LOADING -> {
+                                //TODO replace download all items icon to circle progress bar
+                            }
+                            Status.ERROR -> {
+                                //TODO show error
+                            }
+                        }
+                    }
+                } )
+            }
+
             true
         }
 

@@ -81,9 +81,9 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
                         resource.data?.let {
 
-                            var iterator = it.listIterator()
+                            val iterator = it.listIterator()
                             while( iterator.hasNext() ){
-                                var item = iterator.next()
+                                val item = iterator.next()
                                 if( item.category != null ){
 
                                     if( itemsMap[item.category] == null )

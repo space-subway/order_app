@@ -8,10 +8,10 @@ interface ItemDao {
     @Query("SELECT * FROM item WHERE id = :id LIMIT 1")
     suspend fun findById( id : String ): Item?
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert( item: Item )
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update( item: Item )
 
     @Query("DELETE FROM item")
