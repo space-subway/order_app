@@ -62,17 +62,13 @@ class MainActivity : AppCompatActivity() {
                     resource?.let {
                         when( resource.status ){
                             Status.SUCCESS -> {
-                                val iterator = resource.data?.listIterator()
-                                if (iterator != null) {
-                                    while( iterator.hasNext() ){
-
-                                        val item = iterator.next()
-                                        scope.launch {
-                                            viewModel.getItem( item.id )
-                                        }
-
+                                
+                                for( item in resource?.data!!){
+                                    scope.launch {
+                                        viewModel.getItem( item.id )
                                     }
                                 }
+
                                 //TODO calculate progress of loaded items
                             }
                             Status.LOADING -> {
