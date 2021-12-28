@@ -56,25 +56,61 @@ class MainActivity : AppCompatActivity() {
 
             val viewModel = ViewModelProviders.of( this ).get( ItemViewModel::class.java )
 
+            val menuItem = binding.toolbarMainActivity.menu.getItem( 0 )
+            menuItem.isVisible = false
+
             val scope = CoroutineScope( Job() + Dispatchers.Main )
             val job = scope.launch {
+
                 viewModel.getItems().observe( this@MainActivity, { resource ->
                     resource?.let {
                         when( resource.status ){
                             Status.SUCCESS -> {
-                                
+
+                                binding.progressIndicator.visibility = View.GONE
+                                binding.progressIndicator.isIndeterminate = false
+                                binding.progressIndicator.progress = 0
+                                binding.progressIndicator.visibility = View.VISIBLE
+
+                                val itemsSize = resource?.data!!.size
+                                var loadedItemSize = 0
+
                                 for( item in resource?.data!!){
                                     scope.launch {
-                                        viewModel.getItem( item.id )
-                                    }
-                                }
+                                        viewModel.getItem( item.id ).observe( this@MainActivity, { resource ->
+                                            resource?.let {
+                                                when( resource.status ){
+                                                    Status.SUCCESS -> {
+                                                        loadedItemSize++
 
-                                //TODO calculate progress of loaded items
+                                                        val progress = itemsSize / 100 * loadedItemSize
+
+                                                        binding.progressIndicator.progress = progress
+                                                    }
+                                                    Status.ERROR -> {
+                                                        binding.progressIndicator.visibility = View.GONE
+                                                        menuItem.isVisible = true
+                                                        //TODO show error
+                                                    }
+                                                }
+                                            }
+                                        } )
+                                    }
+                                    binding.progressIndicator.visibility = View.GONE
+                                    menuItem.isVisible = true
+                                }
+                                //update ui
+                                refresh()
                             }
                             Status.LOADING -> {
-                                //TODO replace download all items icon to circle progress bar
+                                menuItem.isVisible = false
+                                binding.progressIndicator.visibility = View.GONE
+                                binding.progressIndicator.isIndeterminate = true
+                                binding.progressIndicator.visibility = View.VISIBLE
                             }
                             Status.ERROR -> {
+                                binding.progressIndicator.visibility = View.GONE
+                                menuItem.isVisible = true
                                 //TODO show error
                             }
                         }
@@ -100,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = title
     }
 
-    fun refresh( view : View ){
+    fun refresh(){
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
