@@ -28,16 +28,20 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         } catch (exception: Exception) {
             if(items.isEmpty()){
                 emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
-            } else {
-                emit(Resource.error(data = items, message = exception.message ?: "Error Occurred!"))
             }
         }
     }
 
     fun getItem( id: String? ) = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
+        val item = itemDao.findById( id!! )
+        item?.let {
+            emit(Resource.success(data = item))
+        }
         try {
-            emit(Resource.success(data = repository.getItem( id )))
+            val received = repository.getItem( id )
+            itemDao.update( received )
+            emit(Resource.success(data = received))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
