@@ -72,35 +72,25 @@ class CategoryItemListFragment : Fragment(), Refreshable {
         viewModel.getItems().observe(this, { resource ->
             resource?.let { resource ->
 
-                val itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
-
                 when (resource.status) {
                     Status.SUCCESS -> {
                         //update ui
                         binding.progressBar.visibility = View.GONE
 
                         resource.data?.let {
-
-                            val iterator = it.listIterator()
-                            while( iterator.hasNext() ){
-                                val item = iterator.next()
-                                if( item.category != null ){
-
-                                    if( itemsMap[item.category] == null )
-                                        itemsMap[item.category!!] = ArrayList()
-
-                                    itemsMap[item.category]!!.add( item )
-                                }
-                            }
-
+                            val itemsMap = convertResponse( it )
                             setupCategoriesAdapter( itemsMap.toSortedMap { t, t2 -> t.name.compareTo(t2.name) } )
-
                         }
                     }
                     Status.ERROR -> {
                         binding.progressBar.visibility = View.GONE
 
-                        if( resource.data == null ) (activity as MainActivity).onNetworkError( resource.message )
+                        if( resource.data == null ) {
+                            (activity as MainActivity).onNetworkError( resource.message )
+                        } else {
+                            val itemsMap = convertResponse( resource.data )
+                            setupCategoriesAdapter( itemsMap.toSortedMap { t, t2 -> t.name.compareTo(t2.name) } )
+                        }
 
                     }
                     Status.LOADING -> {
@@ -110,6 +100,25 @@ class CategoryItemListFragment : Fragment(), Refreshable {
             }
         })
 
+    }
+
+    private fun convertResponse( itemList: List<Item> ): MutableMap<ItemCategory, MutableList<Item>>{
+
+        val itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
+
+        val iterator = itemList.listIterator()
+        while(iterator.hasNext()){
+            val item = iterator.next()
+            if( item.category != null ){
+
+                if( itemsMap[item.category] == null )
+                    itemsMap[item.category!!] = ArrayList()
+
+                itemsMap[item.category]!!.add( item )
+            }
+        }
+
+        return itemsMap
     }
 
     override fun refresh() {

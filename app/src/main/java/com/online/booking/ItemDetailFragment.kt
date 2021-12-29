@@ -104,20 +104,15 @@ class ItemDetailFragment : Fragment(), Refreshable {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         resource.data?.let {
-
-                            //update ui
-                            this@ItemDetailFragment.item!!.description  = it.description
-
-                            this@ItemDetailFragment.item!!.viewCount    = it.viewCount
-                            this@ItemDetailFragment.item!!.rating       = it.rating
-
-                            updateUI( this@ItemDetailFragment.item!! )
-
+                            updateUI( it )
                         }
                     }
                     Status.ERROR -> {
-                        (activity as MainActivity).onNetworkError( resource.message )
-
+                        if( resource.data == null ) {
+                            (activity as MainActivity).onNetworkError( resource.message )
+                        } else {
+                            updateUI( resource.data )
+                        }
                     }
                     Status.LOADING -> {
 

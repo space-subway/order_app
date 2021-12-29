@@ -101,6 +101,9 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 //update ui
                                 refresh()
+
+                                binding.networkStatusView.visibility = View.GONE
+                                binding.navHostFragmentItemDetail.visibility = View.VISIBLE
                             }
                             Status.LOADING -> {
                                 menuItem.isVisible = false
@@ -136,8 +139,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = title
     }
 
-    fun refresh(){
+    fun refreshBtnClick( view: View ){
+        refresh()
+    }
 
+    fun refresh(){
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
 
@@ -146,10 +152,7 @@ class MainActivity : AppCompatActivity() {
 
             refreshableFragment.refresh()
 
-            binding.networkStatusView.visibility = View.GONE
-            binding.navHostFragmentItemDetail.visibility = View.VISIBLE
         }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
