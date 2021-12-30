@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                                                     Status.ERROR -> {
                                                         binding.progressIndicator.visibility = View.GONE
                                                         menuItem.isVisible = true
-                                                        //TODO show error
+                                                        showPopUpMessage( resource.message )
                                                     }
                                                 }
                                             }
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                             Status.ERROR -> {
                                 binding.progressIndicator.visibility = View.GONE
                                 menuItem.isVisible = true
-                                //TODO show error
+                                showPopUpMessage( it.message )
                             }
                         }
                     }
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         refresh()
     }
 
-    fun refresh(){
+    private fun refresh(){
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
 
@@ -170,5 +171,9 @@ class MainActivity : AppCompatActivity() {
         binding.connectionMessage.text = message
         binding.networkStatusView.visibility = View.VISIBLE
         binding.navHostFragmentItemDetail.visibility = View.GONE
+    }
+
+    private fun showPopUpMessage(message: String?){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
