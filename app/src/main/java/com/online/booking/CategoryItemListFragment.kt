@@ -24,6 +24,8 @@ import kotlin.collections.HashMap
 
 class CategoryItemListFragment : Fragment(), Refreshable {
 
+    var itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
+
     private var _binding: FragmentCategoryItemListBinding? = null
 
     // This property is only valid between onCreateView and
@@ -73,24 +75,19 @@ class CategoryItemListFragment : Fragment(), Refreshable {
             resource?.let { resource ->
 
                 when (resource.status) {
-                    Status.SUCCESS -> {
+                    Status.SUCCESS_REMOTE, Status.SUCCESS_LOCAL -> {
                         //update ui
                         binding.progressBar.visibility = View.GONE
 
                         resource.data?.let {
-                            val itemsMap = convertResponse( it )
+                            itemsMap = convertResponse( it )
                             setupCategoriesAdapter( itemsMap.toSortedMap { t, t2 -> t.name.compareTo(t2.name) } )
                         }
                     }
                     Status.ERROR -> {
                         binding.progressBar.visibility = View.GONE
 
-                        if( resource.data == null ) {
-                            (activity as MainActivity).onNetworkError( resource.message )
-                        } else {
-                            val itemsMap = convertResponse( resource.data )
-                            setupCategoriesAdapter( itemsMap.toSortedMap { t, t2 -> t.name.compareTo(t2.name) } )
-                        }
+                        if(itemsMap.isEmpty()) (activity as MainActivity).onNetworkError( resource.message )
 
                     }
                     Status.LOADING -> {

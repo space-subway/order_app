@@ -102,11 +102,11 @@ class ItemDetailFragment : Fragment(), Refreshable {
         viewModel.getItem( item!!.id ).observe(this, { resource ->
             resource?.let { resource ->
                 when (resource.status) {
-                    Status.SUCCESS -> {
-                        resource.data?.let {
-                            updateUI( it )
+                    Status.SUCCESS_REMOTE, Status.SUCCESS_LOCAL -> {
+                            resource.data?.let {
+                                updateUI(it)
+                            }
                         }
-                    }
                     Status.ERROR -> {
                         if( resource.data == null ) {
                             (activity as MainActivity).onNetworkError( resource.message )

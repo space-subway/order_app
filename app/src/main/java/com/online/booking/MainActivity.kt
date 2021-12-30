@@ -61,12 +61,11 @@ class MainActivity : AppCompatActivity() {
             menuItem.isVisible = false
 
             val scope = CoroutineScope( Job() + Dispatchers.Main )
-            val job = scope.launch {
-
+            scope.launch {
                 viewModel.getItems().observe( this@MainActivity, { resource ->
                     resource?.let {
                         when( resource.status ){
-                            Status.SUCCESS -> {
+                            Status.SUCCESS_REMOTE -> {
 
                                 binding.progressIndicator.visibility = View.GONE
                                 binding.progressIndicator.isIndeterminate = false
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                                         viewModel.getItem( item.id ).observe( this@MainActivity, { resource ->
                                             resource?.let {
                                                 when( resource.status ){
-                                                    Status.SUCCESS -> {
+                                                    Status.SUCCESS_REMOTE -> {
                                                         loadedItemSize++
 
                                                         val progress = itemsSize / 100 * loadedItemSize
@@ -92,6 +91,8 @@ class MainActivity : AppCompatActivity() {
                                                         binding.progressIndicator.visibility = View.GONE
                                                         menuItem.isVisible = true
                                                         showPopUpMessage( resource.message )
+
+                                                        resource.message?.let { msg -> this.cancel(msg) }
                                                     }
                                                 }
                                             }
@@ -116,6 +117,8 @@ class MainActivity : AppCompatActivity() {
                                 binding.progressIndicator.visibility = View.GONE
                                 menuItem.isVisible = true
                                 showPopUpMessage( it.message )
+
+                                resource.message?.let { msg -> this.cancel(msg) }
                             }
                         }
                     }
@@ -174,6 +177,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showPopUpMessage(message: String?){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

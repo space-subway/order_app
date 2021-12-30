@@ -19,16 +19,14 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     fun getItems() = liveData (Dispatchers.IO) {
         emit(Resource.loading(data = null))
         val items = itemDao.allItems
-        if(items.isNotEmpty()) emit(Resource.success(data = items))
+        if(items.isNotEmpty()) emit(Resource.localSuccess(data = items))
         try {
             val received = repository.getItems()
             itemDao.deleteAll()
             received.forEach { item ->  itemDao.insert( item ) }
-            emit(Resource.success(data = received))
+            emit(Resource.remoteSuccess(data = received))
         } catch (exception: Exception) {
-            if(items.isEmpty()){
-                emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
-            }
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
 
@@ -36,12 +34,12 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         emit(Resource.loading(data = null))
         val item = itemDao.findById( id!! )
         item?.let {
-            emit(Resource.success(data = item))
+            emit(Resource.localSuccess(data = item))
         }
         try {
             val received = repository.getItem( id )
             itemDao.update( received )
-            emit(Resource.success(data = received))
+            emit(Resource.remoteSuccess(data = received))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
