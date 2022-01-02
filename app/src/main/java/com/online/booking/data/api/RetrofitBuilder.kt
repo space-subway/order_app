@@ -1,5 +1,6 @@
 package com.online.booking.data.api
 
+import com.online.booking.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,11 +17,19 @@ object RetrofitBuilder {
         .build()
 
     private fun buildRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        return if(BuildConfig.DEBUG){
+            Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080")
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        } else {
+            Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
     }
 
     val apiService: ApiService = buildRetrofit().create(ApiService::class.java)

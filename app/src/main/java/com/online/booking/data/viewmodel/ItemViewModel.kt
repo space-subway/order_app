@@ -26,7 +26,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
             received.forEach { item ->  itemDao.insert( item ) }
             emit(Resource.remoteSuccess(data = received))
         } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = items, message = exception.message ?: "Error Occurred!"))
         }
     }
 
@@ -41,7 +41,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
             itemDao.update( received )
             emit(Resource.remoteSuccess(data = received))
         } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = item, message = exception.message ?: "Error Occurred!"))
         }
     }
 
