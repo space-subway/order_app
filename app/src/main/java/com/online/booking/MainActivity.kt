@@ -6,27 +6,20 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.work.*
 import com.online.booking.data.viewmodel.ItemViewModel
 import com.online.booking.databinding.ActivityMainBinding
-import com.online.booking.utils.NotificationUtils
+import com.online.booking.utils.DownloadAllItemsWorker
 import com.online.booking.utils.Refreshable
-import com.online.booking.utils.Status
-import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        const val CHANNEL_ID = "notification_channel_download_all"
-        const val NOTIFICATION_ID = 0
-    }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -52,8 +45,6 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        NotificationUtils.createNotificationChannel( this,  CHANNEL_ID)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,103 +56,30 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.download_all_items -> {
 
-            val viewModel = ViewModelProviders.of( this ).get( ItemViewModel::class.java )
-
             val menuItem = binding.toolbarMainActivity.menu.getItem( 0 )
             menuItem.isVisible = false
 
-            //notification builder setup
-            val builder = NotificationCompat.Builder(this, CHANNEL_ID).apply {
-                setContentTitle(getString(R.string.notification_channel_name))
-                setContentText(getString(R.string.notification_content_text))
-                setSmallIcon(R.drawable.ic_baseline_get_app_24)
-            }
+            val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>().build()
+            val workManager = WorkManager.getInstance(this)
 
-            NotificationManagerCompat.from(this).apply {
-                // Issue the initial notification with zero progress
-                builder.setProgress(100, 0, true)
-                notify(NOTIFICATION_ID, builder.build())
-            }
-
-            val scope = CoroutineScope( Job() + Dispatchers.Main )
-            scope.launch {
-                viewModel.getItems().observe( this@MainActivity, { resource ->
-                    resource?.let {
-                        when( resource.status ){
-                            Status.SUCCESS_REMOTE -> {
-
-                                binding.progressIndicator.visibility = View.GONE
-                                binding.progressIndicator.isIndeterminate = false
-                                binding.progressIndicator.progress = 0
-                                binding.progressIndicator.visibility = View.VISIBLE
-
-                                val itemsSize = resource?.data!!.size
-                                var loadedItemSize = 0
-
-                                for( item in resource?.data!!){
-                                    scope.launch {
-                                        viewModel.getItem( item.id ).observe( this@MainActivity, { resource ->
-                                            resource?.let {
-                                                when( resource.status ){
-                                                    Status.SUCCESS_REMOTE -> {
-                                                        loadedItemSize++
-
-                                                        val progress = itemsSize / 100 * loadedItemSize
-
-                                                        binding.progressIndicator.progress = progress
-
-                                                        NotificationManagerCompat.from(this@MainActivity).apply {
-                                                            // Issue the initial notification with zero progress
-                                                            builder.setProgress(100, progress, false)
-                                                            notify(NOTIFICATION_ID, builder.build())
-                                                        }
-                                                    }
-                                                    Status.ERROR -> {
-                                                        binding.progressIndicator.visibility = View.GONE
-                                                        menuItem.isVisible = true
-                                                        showPopUpMessage( resource.message )
-
-                                                        resource.message?.let { msg -> this.cancel(msg) }
-                                                    }
-                                                }
-                                            }
-                                        } )
-                                    }
-                                    binding.progressIndicator.visibility = View.GONE
-                                    menuItem.isVisible = true
-
-                                    NotificationManagerCompat.from(this@MainActivity).apply {
-                                        // When done, update the notification one more time to remove the progress bar
-                                        builder.setContentText(getString(R.string.notification_channel_download_complete))
-                                            .setProgress(0, 0, false)
-                                        notify(NOTIFICATION_ID, builder.build())
-                                    }
-                                }
-                                //update ui
-                                refresh()
-
-                                binding.networkStatusView.visibility = View.GONE
-                                binding.navHostFragmentItemDetail.visibility = View.VISIBLE
-                            }
-                            Status.LOADING -> {
-                                menuItem.isVisible = false
-                                binding.progressIndicator.visibility = View.GONE
-                                binding.progressIndicator.isIndeterminate = true
-                                binding.progressIndicator.visibility = View.VISIBLE
-
+            workManager.enqueue(downloadAllItemsWork)
+            workManager.getWorkInfoByIdLiveData(downloadAllItemsWork.id)
+                .observe(this, { info ->
+                    if( info != null && info.state.isFinished ){
+                        when( info.state ){
+                            WorkInfo.State.SUCCEEDED -> {
 
                             }
-                            Status.ERROR -> {
+                            WorkInfo.State.FAILED -> {
+                                val message = info.outputData.getString( DownloadAllItemsWorker.MESSAGE_PARAM )
+
                                 binding.progressIndicator.visibility = View.GONE
                                 menuItem.isVisible = true
-                                showPopUpMessage( it.message )
-
-                                resource.message?.let { msg -> this.cancel(msg) }
+                                showPopUpMessage( message )
                             }
                         }
                     }
-                } )
-            }
+                })
 
             true
         }
