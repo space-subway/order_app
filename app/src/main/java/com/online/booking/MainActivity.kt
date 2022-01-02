@@ -14,6 +14,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.work.*
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.utils.DownloadAllItemsWorker
+import com.online.booking.utils.DownloadAllItemsWorker.Companion.PROGRESS
+import com.online.booking.utils.DownloadAllItemsWorker.Companion.TAG_PROGRESS
 import com.online.booking.utils.Refreshable
 
 class MainActivity : AppCompatActivity() {
@@ -56,10 +58,33 @@ class MainActivity : AppCompatActivity() {
             val menuItem = binding.toolbarMainActivity.menu.getItem( 0 )
             menuItem.isVisible = false
 
-            val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>().build()
+            val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>()
+                .addTag(TAG_PROGRESS)
+                .build()
+
             val workManager = WorkManager.getInstance(this)
 
             workManager.enqueue(downloadAllItemsWork)
+
+            workManager.getWorkInfosByTagLiveData(TAG_PROGRESS)
+                .observe(this, { info ->
+                    if(!info.isNullOrEmpty()){
+                        info.forEach{ workInfo ->
+                            if(WorkInfo.State.RUNNING == workInfo.state){
+                                val progress = workInfo.progress.getInt(PROGRESS, 0)
+                                if(progress == 0) {
+                                    //init progress bar
+                                    binding.progressIndicator.visibility = View.GONE
+                                    binding.progressIndicator.isIndeterminate = false
+                                    binding.progressIndicator.progress = 0
+                                    binding.progressIndicator.visibility = View.VISIBLE
+                                }
+                                binding.progressIndicator.progress = progress
+                            }
+                        }
+                    }
+                })
+
             workManager.getWorkInfoByIdLiveData(downloadAllItemsWork.id)
                 .observe(this, { info ->
                     if( info != null && info.state.isFinished ){
