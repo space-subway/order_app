@@ -51,7 +51,7 @@ class DownloadAllItemsWorker(context: Context, parameters: WorkerParameters)
                 val progress = received.size/ 100 * loadedItemsCnt
 
                 setProgressAsync(workDataOf(PROGRESS to progress))
-                
+
                 NotificationManagerCompat.from(applicationContext).apply {
                     builder.setProgress(100, progress, false)
                     notify(NOTIFICATION_ID, builder.build())

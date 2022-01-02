@@ -75,9 +75,11 @@ class MainActivity : AppCompatActivity() {
                                 if(progress == 0) {
                                     //init progress bar
                                     binding.progressIndicator.visibility = View.GONE
-                                    binding.progressIndicator.isIndeterminate = false
+                                    binding.progressIndicator.isIndeterminate = true
                                     binding.progressIndicator.progress = 0
                                     binding.progressIndicator.visibility = View.VISIBLE
+                                } else {
+                                    binding.progressIndicator.isIndeterminate = false
                                 }
                                 binding.progressIndicator.progress = progress
                             }
