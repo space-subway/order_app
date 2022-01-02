@@ -6,15 +6,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.work.*
-import com.online.booking.data.viewmodel.ItemViewModel
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.utils.DownloadAllItemsWorker
 import com.online.booking.utils.Refreshable
@@ -68,7 +65,8 @@ class MainActivity : AppCompatActivity() {
                     if( info != null && info.state.isFinished ){
                         when( info.state ){
                             WorkInfo.State.SUCCEEDED -> {
-
+                                binding.progressIndicator.visibility = View.GONE
+                                menuItem.isVisible = true
                             }
                             WorkInfo.State.FAILED -> {
                                 val message = info.outputData.getString( DownloadAllItemsWorker.MESSAGE_PARAM )
