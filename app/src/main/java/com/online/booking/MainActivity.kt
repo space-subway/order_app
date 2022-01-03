@@ -59,19 +59,19 @@ class MainActivity : AppCompatActivity() {
             menuItem.isVisible = false
 
             val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>()
-                .addTag(TAG_PROGRESS)
+                //.addTag(TAG_PROGRESS)
                 .build()
 
             val workManager = WorkManager.getInstance(this)
 
             workManager.enqueue(downloadAllItemsWork)
 
-            workManager.getWorkInfosByTagLiveData(TAG_PROGRESS)
+            workManager.getWorkInfoByIdLiveData(downloadAllItemsWork.id)
                 .observe(this, { info ->
-                    if(!info.isNullOrEmpty()){
-                        info.forEach{ workInfo ->
-                            if(WorkInfo.State.RUNNING == workInfo.state){
-                                val progress = workInfo.progress.getInt(PROGRESS, 0)
+                    if( info != null ){
+                        when( info.state ){
+                            WorkInfo.State.RUNNING -> {
+                                val progress = info.progress.getInt(PROGRESS, 0)
                                 if(progress == 0) {
                                     //init progress bar
                                     binding.progressIndicator.visibility = View.GONE
@@ -83,14 +83,6 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 binding.progressIndicator.progress = progress
                             }
-                        }
-                    }
-                })
-
-            workManager.getWorkInfoByIdLiveData(downloadAllItemsWork.id)
-                .observe(this, { info ->
-                    if( info != null && info.state.isFinished ){
-                        when( info.state ){
                             WorkInfo.State.SUCCEEDED -> {
                                 binding.progressIndicator.visibility = View.GONE
                                 menuItem.isVisible = true

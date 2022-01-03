@@ -87,7 +87,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
                     Status.ERROR -> {
                         binding.progressBar.visibility = View.GONE
 
-                        if(itemsMap.isEmpty()) (activity as MainActivity).onNetworkError( resource.message )
+                        if(itemsMap.isNullOrEmpty()) (activity as MainActivity).onNetworkError( resource.message )
 
                     }
                     Status.LOADING -> {
