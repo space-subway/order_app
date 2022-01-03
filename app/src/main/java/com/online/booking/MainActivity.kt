@@ -86,6 +86,8 @@ class MainActivity : AppCompatActivity() {
                             WorkInfo.State.SUCCEEDED -> {
                                 binding.progressIndicator.visibility = View.GONE
                                 menuItem.isVisible = true
+
+                                refresh()
                             }
                             WorkInfo.State.FAILED -> {
                                 val message = info.outputData.getString( DownloadAllItemsWorker.MESSAGE_PARAM )
