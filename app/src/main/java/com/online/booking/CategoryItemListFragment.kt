@@ -44,6 +44,8 @@ class CategoryItemListFragment : Fragment(), Refreshable {
     override fun onResume() {
         super.onResume()
 
+        (activity as MainActivity).setVisibleActionItem(0, true)
+
         GlobalScope.launch ( Dispatchers.Main ) {
             loadItems()
         }

@@ -57,6 +57,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
         super.onResume()
 
         (activity as MainActivity).showUpToolbar()
+        (activity as MainActivity).setVisibleActionItem(0, false)
 
         updateUI(this@ItemDetailFragment.item!!)
 

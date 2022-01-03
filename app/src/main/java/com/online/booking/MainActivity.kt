@@ -55,8 +55,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.download_all_items -> {
 
-            val menuItem = binding.toolbarMainActivity.menu.getItem( 0 )
-            menuItem.isVisible = false
+            setVisibleActionItem(0, false)
 
             val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>()
                 //.addTag(TAG_PROGRESS)
@@ -85,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             WorkInfo.State.SUCCEEDED -> {
                                 binding.progressIndicator.visibility = View.GONE
-                                menuItem.isVisible = true
+                                setVisibleActionItem(0, true)
 
                                 refresh()
                             }
@@ -93,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                                 val message = info.outputData.getString( DownloadAllItemsWorker.MESSAGE_PARAM )
 
                                 binding.progressIndicator.visibility = View.GONE
-                                menuItem.isVisible = true
+                                setVisibleActionItem(0, true)
                                 showPopUpMessage( message )
                             }
                         }
@@ -153,5 +152,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showPopUpMessage(message: String?){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    fun setVisibleActionItem(i: Int, isVisible: Boolean) {
+        val menuItem = binding.toolbarMainActivity.menu.getItem(i)
+        menuItem.isVisible = isVisible
     }
 }
