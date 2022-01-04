@@ -22,9 +22,14 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         if(items.isNotEmpty()) emit(Resource.localSuccess(data = items))
         try {
             val received = repository.getItems()
-            itemDao.deleteAll()
-            received.forEach { item ->  itemDao.insert( item ) }
-            emit(Resource.remoteSuccess(data = received))
+            //Compare two lists
+            if( received.size != items.size
+                && !received.zip(items).all { (x, y) -> x == y }
+            ){
+                itemDao.deleteAll()
+                received.forEach { item ->  itemDao.insert( item ) }
+                emit(Resource.remoteSuccess(data = received))
+            }
         } catch (exception: Exception) {
             emit(Resource.error(data = items, message = exception.message ?: "Error Occurred!"))
         }
@@ -38,8 +43,10 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         }
         try {
             val received = repository.getItem( id )
-            itemDao.update( received )
-            emit(Resource.remoteSuccess(data = received))
+            if(received != item){
+                itemDao.update( received )
+                emit(Resource.remoteSuccess(data = received))
+            }
         } catch (exception: Exception) {
             emit(Resource.error(data = item, message = exception.message ?: "Error Occurred!"))
         }

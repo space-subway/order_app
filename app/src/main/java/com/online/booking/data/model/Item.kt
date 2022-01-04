@@ -47,6 +47,36 @@ data class Item(
         return 0
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Item
+
+        if (id != other.id) return false
+        if (title != other.title) return false
+        if (description != other.description) return false
+        if (descriptionShort != other.descriptionShort) return false
+        if (price.toDouble() != other.price.toDouble()) return false
+        if (viewCount != other.viewCount) return false
+        if (rating != other.rating) return false
+        if (category != other.category) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + (title?.hashCode() ?: 0)
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + (descriptionShort?.hashCode() ?: 0)
+        result = 31 * result + price.hashCode()
+        result = 31 * result + viewCount
+        result = 31 * result + (rating?.hashCode() ?: 0)
+        result = 31 * result + (category?.hashCode() ?: 0)
+        return result
+    }
+
     companion object CREATOR : Parcelable.Creator<Item> {
 
         const val TABLE_NAME        = "item"

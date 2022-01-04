@@ -47,6 +47,32 @@ data class Rating(
         return 0
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Rating
+
+        if (id != other.id) return false
+        if (oneStarCount != other.oneStarCount) return false
+        if (twoStarCount != other.twoStarCount) return false
+        if (threeStarCount != other.threeStarCount) return false
+        if (fourStarCount != other.fourStarCount) return false
+        if (fiveStarCount != other.fiveStarCount) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + oneStarCount
+        result = 31 * result + twoStarCount
+        result = 31 * result + threeStarCount
+        result = 31 * result + fourStarCount
+        result = 31 * result + fiveStarCount
+        return result
+    }
+
     companion object CREATOR : Parcelable.Creator<Rating>{
 
         const val TABLE_NAME    = "rating"
