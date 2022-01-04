@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.online.booking.data.model.Item
 import com.online.booking.data.model.ItemCategory
@@ -24,7 +25,9 @@ import kotlin.collections.HashMap
 
 class CategoryItemListFragment : Fragment(), Refreshable {
 
-    var itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
+    private lateinit var viewPager: ViewPager2
+    private lateinit var adapter: ViewPagerAdapter
+    private var itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
     private var _binding: FragmentCategoryItemListBinding? = null
 
@@ -57,15 +60,15 @@ class CategoryItemListFragment : Fragment(), Refreshable {
     }
 
     private fun setupCategoriesAdapter( itemsMap: SortedMap<ItemCategory, MutableList<Item>> ){
-        var categoryTab = binding.tabLayout
+        val categoryTab = binding.tabLayout
 
-        var viewPager   = binding.tabViewpager
-        var adapter = ViewPagerAdapter(activity as MainActivity, itemsMap)
+        viewPager   = binding.tabViewpager
+
+        adapter = ViewPagerAdapter(activity as MainActivity, itemsMap)
         viewPager.adapter = adapter
 
         TabLayoutMediator(categoryTab, viewPager) { tab, position ->
             tab.text = itemsMap.keys.elementAt(position).name
-            viewPager.setCurrentItem(tab.position, true)
         }.attach()
     }
 

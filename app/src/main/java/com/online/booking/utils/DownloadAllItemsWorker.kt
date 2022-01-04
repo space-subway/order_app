@@ -22,7 +22,6 @@ class DownloadAllItemsWorker(context: Context, parameters: WorkerParameters)
         const val NOTIFICATION_ID = 0
         const val MESSAGE_PARAM = "MESSAGE_PARAM"
         const val PROGRESS = "PROGRESS"
-        const val TAG_PROGRESS = "TAG_PROGRESS"
     }
 
     private lateinit var builder: NotificationCompat.Builder

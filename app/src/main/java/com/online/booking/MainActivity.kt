@@ -15,7 +15,6 @@ import androidx.work.*
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.utils.DownloadAllItemsWorker
 import com.online.booking.utils.DownloadAllItemsWorker.Companion.PROGRESS
-import com.online.booking.utils.DownloadAllItemsWorker.Companion.TAG_PROGRESS
 import com.online.booking.utils.Refreshable
 
 class MainActivity : AppCompatActivity() {
@@ -58,7 +57,6 @@ class MainActivity : AppCompatActivity() {
             setVisibleActionItem(0, false)
 
             val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>()
-                //.addTag(TAG_PROGRESS)
                 .build()
 
             val workManager = WorkManager.getInstance(this)
