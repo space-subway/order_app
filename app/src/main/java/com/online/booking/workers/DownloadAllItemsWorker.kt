@@ -1,4 +1,4 @@
-package com.online.booking.utils
+package com.online.booking.workers
 
 import android.content.Context
 import androidx.core.app.NotificationCompat
@@ -10,9 +10,9 @@ import com.online.booking.data.api.RetrofitBuilder
 import com.online.booking.data.db.AppDatabase
 import com.online.booking.data.db.ItemDao
 import com.online.booking.data.repository.ItemRepository
+import com.online.booking.utils.NotificationUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.Thread.sleep
 
 class DownloadAllItemsWorker(context: Context, parameters: WorkerParameters)
     : CoroutineWorker(context, parameters) {
@@ -87,7 +87,7 @@ class DownloadAllItemsWorker(context: Context, parameters: WorkerParameters)
     }
 
     private fun createForegroundInfo(): ForegroundInfo{
-        NotificationUtils.createNotificationChannel( applicationContext,  CHANNEL_ID)
+        NotificationUtils.createNotificationChannel(applicationContext, CHANNEL_ID)
         //notification builder setup
         builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID).apply {
             setContentTitle(applicationContext.getString(R.string.notification_channel_name))

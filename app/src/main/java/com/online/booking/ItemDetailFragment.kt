@@ -1,10 +1,12 @@
 package com.online.booking
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.online.booking.databinding.FragmentItemDetailBinding
@@ -66,6 +68,14 @@ class ItemDetailFragment : Fragment(), Refreshable {
             loadItem()
         }
 
+        binding.fab.setOnClickListener{
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.type="text/plain"
+            val text = item!!.title + " : " + item!!.price + "$\n" + item!!.descriptionShort
+            shareIntent.putExtra(Intent.EXTRA_TEXT, text)
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.sharing_title)))
+        }
     }
 
     private fun updateUI( item : Item){

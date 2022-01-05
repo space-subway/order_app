@@ -13,8 +13,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.work.*
 import com.online.booking.databinding.ActivityMainBinding
-import com.online.booking.utils.DownloadAllItemsWorker
-import com.online.booking.utils.DownloadAllItemsWorker.Companion.PROGRESS
+import com.online.booking.workers.DownloadAllItemsWorker
+import com.online.booking.workers.DownloadAllItemsWorker.Companion.PROGRESS
 import com.online.booking.utils.Refreshable
 
 class MainActivity : AppCompatActivity() {
