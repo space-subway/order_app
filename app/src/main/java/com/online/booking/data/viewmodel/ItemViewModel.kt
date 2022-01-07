@@ -52,4 +52,16 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun viewCountInc( id: String? ) = liveData(Dispatchers.IO) {
+        try{
+            val item = repository.viewCountInc( id!! )
+            item?.let {
+                emit(Resource.remoteSuccess(data=item))
+            }
+        } catch (exception: Exception){
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
+
+    }
+
 }

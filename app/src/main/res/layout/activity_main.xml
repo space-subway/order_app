@@ -71,7 +71,6 @@
 
             <ProgressBar
                 android:id="@+id/progress_indicator"
-                style="@android:style/Widget.ProgressBar.Small.Inverse"
                 android:padding="@dimen/content_margin_min"
                 android:layout_gravity="right"
                 android:layout_width="wrap_content"

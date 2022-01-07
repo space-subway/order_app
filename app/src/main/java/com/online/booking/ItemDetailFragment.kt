@@ -56,13 +56,11 @@ class ItemDetailFragment : Fragment(), Refreshable {
         super.onDestroy()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         (activity as MainActivity).showUpToolbar()
         (activity as MainActivity).setVisibleActionItem(0, false)
-
-        updateUI(this@ItemDetailFragment.item!!)
 
         GlobalScope.launch ( Dispatchers.Main ) {
             loadItem()
@@ -110,6 +108,15 @@ class ItemDetailFragment : Fragment(), Refreshable {
     private fun loadItem() {
 
         val viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+
+        //increment view count
+        viewModel.viewCountInc( item!!.id ).observe(this, { resource ->
+            resource?.let { resource ->
+                when(resource.status){
+                    Status.SUCCESS_REMOTE -> resource.data?.let { updateUI(it) }
+                }
+            }
+        })
 
         viewModel.getItem( item!!.id ).observe(this, { resource ->
             resource?.let { resource ->

@@ -8,4 +8,6 @@ class ItemRepository(private val apiHelper: ApiHelper ) {
 
     suspend fun getItem( id: String? ) = apiHelper.getItem( id )
 
+    suspend fun viewCountInc( id: String? ) = apiHelper.viewCountInc( id )
+
 }
