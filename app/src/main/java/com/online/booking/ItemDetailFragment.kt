@@ -29,10 +29,8 @@ class ItemDetailFragment : Fragment(), Refreshable {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            if(it.containsKey(
-                    ARG_ITEM
-            )){
-                item = it.getParcelable<Item>(ARG_ITEM)
+            if(it.containsKey(ARG_ITEM)){
+                item = it.getParcelable(ARG_ITEM)
             }
         }
     }
@@ -77,7 +75,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
     }
 
     private fun updateUI( item : Item){
-        binding.itemPrice.text = "$" + item.price
+        binding.itemPrice.text = "$" + item.price.toDouble()
         binding.itemTitle.text = item.title
         binding.shortDescription.text = item.descriptionShort
         if ( item.description == null || "" == item.description) {

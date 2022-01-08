@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.online.booking.data.model.Item
+import java.math.BigDecimal
 
 class ItemsAdapter(private val items: List<Item>,
                    private val onClickListener: View.OnClickListener
@@ -28,7 +29,7 @@ class ItemsAdapter(private val items: List<Item>,
         val item = items[ position ]
 
         holder.tittleTextView.text              = item.title
-        holder.priceTextView.text               = "$" + item.price
+        holder.priceTextView.text               = "$" + item.price.toDouble()
         holder.shortDescriptionTextView.text    = item.descriptionShort
 
         holder.itemView.tag = item

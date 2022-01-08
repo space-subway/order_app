@@ -41,6 +41,8 @@ data class Item(
         parcel.writeString(descriptionShort)
         parcel.writeDouble(price.toDouble())
         parcel.writeInt(viewCount)
+        parcel.writeParcelable(rating, flags)
+        parcel.writeParcelable(category, flags)
     }
 
     override fun describeContents(): Int {
