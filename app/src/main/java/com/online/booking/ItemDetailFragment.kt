@@ -2,11 +2,14 @@ package com.online.booking
 
 import android.content.Intent
 import android.os.Bundle
+import android.system.Os.accept
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.online.booking.databinding.FragmentItemDetailBinding
 import com.online.booking.data.model.Item
 import com.online.booking.data.viewmodel.ItemViewModel
@@ -69,6 +72,33 @@ class ItemDetailFragment : Fragment(), Refreshable {
             val text = item!!.title + " : " + item!!.price + "$\n" + item!!.descriptionShort
             shareIntent.putExtra(Intent.EXTRA_TEXT, text)
             startActivity(Intent.createChooser(shareIntent, getString(R.string.sharing_title)))
+        }
+
+        val singleItems = arrayOf("1 star", "2 star", "3 star", "4 star", "5 star")
+        val checkedItem = 3
+        var rating = checkedItem + 1
+
+        binding.rateBtn.setOnClickListener{
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.rate_dlg_title))
+                //.setMessage(resources.getString(R.string.rate_dlg_message))
+                .setSingleChoiceItems( singleItems, checkedItem ){ dialog, which->
+                    rating = which + 1
+                }
+                .setNeutralButton(resources.getString(R.string.later)) { dialog, which ->
+                    // Respond to negative button press
+                }
+                .setPositiveButton(resources.getString(R.string.rate)) { dialog, which ->
+                    val viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+
+                    viewModel.rate( item!!.id, rating ).observe( this, { resource ->
+                        when(resource.status){
+                            Status.SUCCESS_REMOTE -> updateUI( resource.data!! )
+                            else -> Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                        }
+                    } )
+                }
+                .show()
         }
     }
 

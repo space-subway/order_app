@@ -15,4 +15,10 @@ interface ApiService {
     @GET("item/{id}/view_cnt_inc")
     suspend fun viewCountInc( @Path(value = "id") id: String? ): Item
 
+    @GET("item/{id}/rate/{rating}")
+    suspend fun rate(
+        @Path(value = "id") id: String?,
+        @Path(value = "rating") rating: Int?
+    ): Item
+
 }

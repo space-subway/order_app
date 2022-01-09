@@ -13,4 +13,8 @@
 
     <!-- sharing -->
     <string name="sharing_title">Share item</string>
+    <string name="rate">Rate now</string>
+    <string name="later">Maybe later</string>
+    <string name="rate_dlg_message">Support us by give 5 star and write your review</string>
+    <string name="rate_dlg_title">Rate us 5 star</string>
 </resources>

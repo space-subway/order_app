@@ -13,6 +13,10 @@ import kotlinx.coroutines.Dispatchers
 
 class ItemViewModel(application: Application) : AndroidViewModel(application) {
 
+    companion object {
+        const val DEFAULT_ERR_MESSAGE = "Error Occured!"
+    }
+
     private val repository: ItemRepository = ItemRepository( ApiHelper( RetrofitBuilder.apiService) )
     private val itemDao: ItemDao = AppDatabase.getDatabase(application).itemsDao()
 
@@ -31,7 +35,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
                 emit(Resource.remoteSuccess(data = received))
             }
         } catch (exception: Exception) {
-            emit(Resource.error(data = items, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = items, message = exception.message ?: DEFAULT_ERR_MESSAGE))
         }
     }
 
@@ -48,7 +52,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
                 emit(Resource.remoteSuccess(data = received))
             }
         } catch (exception: Exception) {
-            emit(Resource.error(data = item, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = item, message = exception.message ?: DEFAULT_ERR_MESSAGE))
         }
     }
 
@@ -59,9 +63,20 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
                 emit(Resource.remoteSuccess(data=item))
             }
         } catch (exception: Exception){
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = exception.message ?: DEFAULT_ERR_MESSAGE))
         }
 
+    }
+
+    fun rate( id: String?, rating: Int? ) = liveData(Dispatchers.IO) {
+        try{
+            val item = repository.rate( id, rating )
+            item?.let {
+                emit(Resource.remoteSuccess(data = item))
+            }
+        } catch (exception: Exception){
+            emit(Resource.error(data = null, message = exception.message ?: DEFAULT_ERR_MESSAGE))
+        }
     }
 
 }
