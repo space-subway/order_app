@@ -128,6 +128,9 @@ class MainActivity : AppCompatActivity() {
 
             refreshableFragment.refresh()
 
+            binding.networkStatusView.visibility = View.GONE
+            binding.navHostFragmentItemDetail.visibility = View.VISIBLE
+
         }
     }
 

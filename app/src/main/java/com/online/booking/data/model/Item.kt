@@ -2,6 +2,7 @@ package com.online.booking.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Nullable
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import com.online.booking.data.model.Item.CREATOR.ID
@@ -19,7 +20,7 @@ data class Item(
     @SerializedName(DESCRIPTION_SHORT) @ColumnInfo(name = DESCRIPTION_SHORT) var descriptionShort: String?,
     @SerializedName(PRICE) @ColumnInfo(name = PRICE) var price: BigDecimal,
     @SerializedName(VIEW_COUNT) @ColumnInfo(name = VIEW_COUNT) var viewCount:  Int,
-    @SerializedName(RATING) @Embedded( prefix = "rating_" ) var rating: Rating?,
+    @SerializedName(RATING) @Embedded var rating: Rating?,
     @SerializedName(CATEGORY) @ColumnInfo(name = CATEGORY) var category: ItemCategory?
 ) : Parcelable {
 

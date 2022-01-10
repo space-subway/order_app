@@ -1,5 +1,13 @@
 package com.online.booking.data.model
 
+/*data class Rating(
+    val oneStarCount    : Int,
+    val twoStarCount    : Int,
+    val threeStarCount  : Int,
+    val fourStarCount   : Int,
+    val fiveStarCount   : Int
+)*/
+
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -10,23 +18,15 @@ import com.google.gson.annotations.SerializedName
 import com.online.booking.data.model.Rating.CREATOR.ID
 import com.online.booking.data.model.Rating.CREATOR.TABLE_NAME
 
-@Entity(
-    tableName = TABLE_NAME,
-    indices = [Index(value = [ID], unique = true)]
-)
 data class Rating(
-    @PrimaryKey
-    @ColumnInfo(name = ID)
-    var id: String,
-    @SerializedName("OneStarCount") var oneStarCount    : Int,
-    @SerializedName("TwoStarCount") var twoStarCount    : Int,
-    @SerializedName("FreeStarCount") var threeStarCount  : Int,
-    @SerializedName("FourStarCount") var fourStarCount   : Int,
-    @SerializedName("FiveStarCount") var fiveStarCount   : Int
+    @SerializedName("oneStarCount") var oneStarCount    : Int,
+    @SerializedName("twoStarCount") var twoStarCount    : Int,
+    @SerializedName("threeStarCount") var threeStarCount  : Int,
+    @SerializedName("fourStarCount") var fourStarCount   : Int,
+    @SerializedName("fiveStarCount") var fiveStarCount   : Int
 ) : Parcelable {
 
     constructor(parcel : Parcel) : this(
-        parcel.readString()!!,
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -35,7 +35,6 @@ data class Rating(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString( id )
         parcel.writeInt( oneStarCount )
         parcel.writeInt( twoStarCount )
         parcel.writeInt( threeStarCount )
@@ -53,7 +52,7 @@ data class Rating(
 
         other as Rating
 
-        if (id != other.id) return false
+        //if (id != other.id) return false
         if (oneStarCount != other.oneStarCount) return false
         if (twoStarCount != other.twoStarCount) return false
         if (threeStarCount != other.threeStarCount) return false
@@ -64,8 +63,8 @@ data class Rating(
     }
 
     override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + oneStarCount
+        //var result = id.hashCode()
+        var result = oneStarCount.hashCode()
         result = 31 * result + twoStarCount
         result = 31 * result + threeStarCount
         result = 31 * result + fourStarCount

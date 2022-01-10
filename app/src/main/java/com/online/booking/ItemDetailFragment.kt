@@ -94,7 +94,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
                     viewModel.rate( item!!.id, rating ).observe( this, { resource ->
                         when(resource.status){
                             Status.SUCCESS_REMOTE -> updateUI( resource.data!! )
-                            else -> Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                            Status.ERROR -> Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
                         }
                     } )
                 }

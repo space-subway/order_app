@@ -27,13 +27,13 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         try {
             val received = repository.getItems()
             //Compare two lists
-            if( received.size != items.size
-                && !received.zip(items).all { (x, y) -> x == y }
-            ){
+            //if( (received.size != items.size) || (received.size == items.size
+            //    && received.zip(items).all { (x, y) -> x == y })
+            //){
                 itemDao.deleteAll()
                 received.forEach { item ->  itemDao.insert( item ) }
                 emit(Resource.remoteSuccess(data = received))
-            }
+            //}
         } catch (exception: Exception) {
             emit(Resource.error(data = items, message = exception.message ?: DEFAULT_ERR_MESSAGE))
         }
@@ -47,10 +47,10 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         }
         try {
             val received = repository.getItem( id )
-            if(received != item){
+            //if(received != item){
                 itemDao.update( received )
                 emit(Resource.remoteSuccess(data = received))
-            }
+            //}
         } catch (exception: Exception) {
             emit(Resource.error(data = item, message = exception.message ?: DEFAULT_ERR_MESSAGE))
         }

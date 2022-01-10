@@ -12,7 +12,7 @@ import com.online.booking.data.model.ItemCategory
 import com.online.booking.data.model.Rating
 import com.online.booking.utils.Converters
 
-@Database( entities = [Item::class, ItemCategory::class, Rating::class], version = 1 )
+@Database( entities = [Item::class, ItemCategory::class], version = 1 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun itemsDao(): ItemDao
