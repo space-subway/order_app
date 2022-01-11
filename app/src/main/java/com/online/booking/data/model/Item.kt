@@ -61,7 +61,7 @@ data class Item(
         if (description != other.description) return false
         if (descriptionShort != other.descriptionShort) return false
         if (price.toDouble() != other.price.toDouble()) return false
-        if (viewCount != other.viewCount) return false
+        //if (viewCount != other.viewCount) return false
         if (rating != other.rating) return false
         if (category != other.category) return false
 
@@ -74,7 +74,7 @@ data class Item(
         result = 31 * result + (description?.hashCode() ?: 0)
         result = 31 * result + (descriptionShort?.hashCode() ?: 0)
         result = 31 * result + price.hashCode()
-        result = 31 * result + viewCount
+        //result = 31 * result + viewCount
         result = 31 * result + (rating?.hashCode() ?: 0)
         result = 31 * result + (category?.hashCode() ?: 0)
         return result
@@ -99,19 +99,5 @@ data class Item(
         override fun newArray(size: Int): Array<Item?> {
             return arrayOfNulls(size)
         }
-    }
-
-     fun overageRating() : Double {
-        var overageRating = 0.0
-        if( rating != null ) {
-            var divider = rating!!.oneStarCount + rating!!.twoStarCount + rating!!.threeStarCount + rating!!.fourStarCount + rating!!.fiveStarCount
-            overageRating = if( divider == 0 ){
-                0.0
-            } else {
-                (( rating!!.oneStarCount + 2 * rating!!.twoStarCount + 3 * rating!!.threeStarCount + 4 * rating!!.fourStarCount + 5 * rating!!.fiveStarCount ) / divider).toDouble()
-            }
-        }
-
-        return overageRating
     }
 }

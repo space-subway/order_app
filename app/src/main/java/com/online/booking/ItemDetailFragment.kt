@@ -112,23 +112,48 @@ class ItemDetailFragment : Fragment(), Refreshable {
             binding.description.text = item.description
         }
 
-        var overageRating = item.overageRating()
+        var overageRating = item.rating!!.overageRating()
         binding.itemRating.text = overageRating.toString()
         //calculate stars
         var starCount = overageRating.toInt()
         when( starCount ){
-            1 -> binding.itemRatingStars.text = "●"
-            2 -> binding.itemRatingStars.text = "● ●"
-            3 -> binding.itemRatingStars.text = "● ● ●"
-            4 -> binding.itemRatingStars.text = "● ● ● ●"
-            5 -> binding.itemRatingStars.text = "● ● ● ● ●"
+            1 -> {
+                binding.itemRatingStars.text = "●"
+                setRatingVisibility(true)
+            }
+            2 -> {
+                binding.itemRatingStars.text = "● ●"
+                setRatingVisibility(true)
+            }
+            3 -> {
+                binding.itemRatingStars.text = "● ● ●"
+                setRatingVisibility(true)
+            }
+            4 -> {
+                binding.itemRatingStars.text = "● ● ● ●"
+                setRatingVisibility(true)
+            }
+            5 -> {
+                binding.itemRatingStars.text = "● ● ● ● ●"
+                setRatingVisibility(true)
+            }
+            else -> setRatingVisibility(false)
+        }
+
+        if( item.viewCount != null ) binding.itemViewCount.text = item.viewCount.toString() + " Views"
+    }
+
+    private fun setRatingVisibility( isVisible: Boolean ){
+        when(isVisible){
+            true -> {
+                binding.itemRating.visibility = View.VISIBLE
+                binding.itemRatingStars.visibility = View.VISIBLE
+            }
             else -> {
                 binding.itemRating.visibility = View.GONE
                 binding.itemRatingStars.visibility = View.GONE
             }
         }
-
-        if( item.viewCount != null ) binding.itemViewCount.text = item.viewCount.toString() + " Views"
     }
 
     private fun loadItem() {

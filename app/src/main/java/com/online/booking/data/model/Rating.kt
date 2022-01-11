@@ -1,22 +1,8 @@
 package com.online.booking.data.model
 
-/*data class Rating(
-    val oneStarCount    : Int,
-    val twoStarCount    : Int,
-    val threeStarCount  : Int,
-    val fourStarCount   : Int,
-    val fiveStarCount   : Int
-)*/
-
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import com.online.booking.data.model.Rating.CREATOR.ID
-import com.online.booking.data.model.Rating.CREATOR.TABLE_NAME
 
 data class Rating(
     @SerializedName("oneStarCount") var oneStarCount    : Int,
@@ -24,7 +10,7 @@ data class Rating(
     @SerializedName("threeStarCount") var threeStarCount  : Int,
     @SerializedName("fourStarCount") var fourStarCount   : Int,
     @SerializedName("fiveStarCount") var fiveStarCount   : Int
-) : Parcelable {
+) : Parcelable, Comparable<Rating> {
 
     constructor(parcel : Parcel) : this(
         parcel.readInt(),
@@ -52,7 +38,6 @@ data class Rating(
 
         other as Rating
 
-        //if (id != other.id) return false
         if (oneStarCount != other.oneStarCount) return false
         if (twoStarCount != other.twoStarCount) return false
         if (threeStarCount != other.threeStarCount) return false
@@ -63,7 +48,6 @@ data class Rating(
     }
 
     override fun hashCode(): Int {
-        //var result = id.hashCode()
         var result = oneStarCount.hashCode()
         result = 31 * result + twoStarCount
         result = 31 * result + threeStarCount
@@ -74,14 +58,6 @@ data class Rating(
 
     companion object CREATOR : Parcelable.Creator<Rating>{
 
-        const val TABLE_NAME    = "rating"
-        const val ID            = "id"
-        //const val ONE_STARS     = "one_stars"
-        //const val TWO_STARS     = "two_stars"
-        //const val THREE_STARS   = "three_stars"
-        //const val FOUR_STARS    = "four_stars"
-        //const val FIVE_STARS    = "five_stars"
-
         override fun createFromParcel(parcel: Parcel): Rating {
             return Rating(parcel)
         }
@@ -89,5 +65,22 @@ data class Rating(
         override fun newArray(size: Int): Array<Rating?> {
             return arrayOfNulls(size)
         }
+    }
+
+    fun overageRating() : Double {
+        var overageRating = 0.0
+
+        var divider = oneStarCount + twoStarCount + threeStarCount + fourStarCount + fiveStarCount
+        overageRating = if( divider == 0 ){
+            0.0
+        } else {
+            (( oneStarCount + 2 * twoStarCount + 3 * threeStarCount + 4 * fourStarCount + 5 * fiveStarCount ) / divider).toDouble()
+        }
+
+        return overageRating
+    }
+
+    override fun compareTo(other: Rating): Int {
+        return this.overageRating().compareTo(other.overageRating())
     }
 }

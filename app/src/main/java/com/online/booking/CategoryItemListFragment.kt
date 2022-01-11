@@ -108,7 +108,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
         val itemsMap : MutableMap<ItemCategory, MutableList<Item>> = HashMap()
 
-        val iterator = itemList.listIterator()
+        val iterator = itemList.sortedByDescending { it.rating }.listIterator()
         while(iterator.hasNext()){
             val item = iterator.next()
             if( item.category != null ){
