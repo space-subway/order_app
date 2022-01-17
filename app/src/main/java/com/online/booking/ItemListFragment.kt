@@ -28,37 +28,33 @@ class ItemListFragment: Fragment() {
         }
     }
 
-    /**
-     * Method to intercept global key events in the
-     * item list fragment to trigger keyboard shortcuts
-     * Currently provides a toast when Ctrl + Z and Ctrl + F
-     * are triggered
-     */
-    private val unhandledKeyEventListenerCompat =
-        ViewCompat.OnUnhandledKeyEventListenerCompat { v, event ->
-            if (event.keyCode == KeyEvent.KEYCODE_Z && event.isCtrlPressed) {
-                Toast.makeText(
-                    v.context,
-                    "Undo (Ctrl + Z) shortcut triggered",
-                    Toast.LENGTH_LONG
-                ).show()
-                true
-            } else if (event.keyCode == KeyEvent.KEYCODE_F && event.isCtrlPressed) {
-                Toast.makeText(
-                    v.context,
-                    "Find (Ctrl + F) shortcut triggered",
-                    Toast.LENGTH_LONG
-                ).show()
-                true
-            }
-            false
-        }
-
     private var _binding: FragmentItemListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        var items = requireArguments().getParcelableArrayList<Item>(ARG_ITEMS)
+
+        items?.let{
+            itemAdapter = ItemsAdapter(items, View.OnClickListener { itemView ->
+
+                // Click Listener to trigger navigation based
+
+                var item = itemView.tag as Item
+                val bundle = Bundle()
+                bundle.putParcelable(
+                    ItemDetailFragment.ARG_ITEM,
+                    item
+                )
+                itemView.findNavController().navigate(R.id.show_item_detail, bundle)
+            })
+            itemAdapter.notifyDataSetChanged()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,34 +62,11 @@ class ItemListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentItemListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        var items = requireArguments().getParcelableArrayList<Item>(ARG_ITEMS)
 
         var recyclerView = binding.recyclerItemsView
-
-        /** Click Listener to trigger navigation based on if you have
-         * a single pane layout or two pane layout
-         */
-        val onClickListener = View.OnClickListener { itemView ->
-            var item = itemView.tag as Item
-            val bundle = Bundle()
-            bundle.putParcelable(
-                ItemDetailFragment.ARG_ITEM,
-                item
-            )
-            itemView.findNavController().navigate(R.id.show_item_detail, bundle)
-        }
-
-        itemAdapter = ItemsAdapter(items!!, onClickListener)
-
         recyclerView.adapter = itemAdapter
 
-        itemAdapter.notifyDataSetChanged()
+        return binding.root
     }
 
     override fun onDestroyView() {
