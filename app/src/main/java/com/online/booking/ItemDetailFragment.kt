@@ -47,23 +47,6 @@ class ItemDetailFragment : Fragment(), Refreshable {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onDestroy() {
-        _binding = null
-        super.onDestroy()
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        (activity as MainActivity).showUpToolbar()
-        (activity as MainActivity).setVisibleActionItem(0, false)
-
-        GlobalScope.launch ( Dispatchers.Main ) {
-            loadItem()
-        }
 
         binding.fab.setOnClickListener{
             val shareIntent = Intent()
@@ -99,6 +82,24 @@ class ItemDetailFragment : Fragment(), Refreshable {
                     } )
                 }
                 .show()
+        }
+
+        return binding.root
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        (activity as MainActivity).showUpToolbar()
+        (activity as MainActivity).setVisibleActionItem(0, false)
+
+        GlobalScope.launch ( Dispatchers.Main ) {
+            loadItem()
         }
     }
 
