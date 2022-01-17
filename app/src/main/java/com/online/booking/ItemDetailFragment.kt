@@ -112,10 +112,10 @@ class ItemDetailFragment : Fragment(), Refreshable {
             binding.description.text = item.description
         }
 
-        var overageRating = item.rating!!.overageRating()
+        var overageRating = item.rating?.overageRating()
         binding.itemRating.text = overageRating.toString()
         //calculate stars
-        var starCount = overageRating.toInt()
+        var starCount = overageRating?.toInt()
         when( starCount ){
             1 -> {
                 binding.itemRatingStars.text = "●"

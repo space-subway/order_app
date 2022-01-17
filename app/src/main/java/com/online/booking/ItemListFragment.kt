@@ -69,8 +69,8 @@ class ItemListFragment: Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
 
         var items = requireArguments().getParcelableArrayList<Item>(ARG_ITEMS)
 
@@ -92,11 +92,6 @@ class ItemListFragment: Fragment() {
         itemAdapter = ItemsAdapter(items!!, onClickListener)
 
         recyclerView.adapter = itemAdapter
-
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         itemAdapter.notifyDataSetChanged()
     }
