@@ -17,7 +17,6 @@ import com.online.booking.databinding.FragmentCategoryItemListBinding
 import com.online.booking.utils.Refreshable
 import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -50,9 +49,22 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
         (activity as MainActivity).setVisibleActionItem(0, true)
 
+    }
+
+    override fun onStart(){
+        super.onStart()
+
         MainScope().launch ( Dispatchers.Main ) {
             loadItems()
         }
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroyView() {
