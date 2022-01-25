@@ -17,6 +17,7 @@ import com.online.booking.utils.Refreshable
 import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class ItemDetailFragment : Fragment(), Refreshable {
@@ -98,7 +99,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
         (activity as MainActivity).showUpToolbar()
         (activity as MainActivity).setVisibleActionItem(0, false)
 
-        GlobalScope.launch ( Dispatchers.Main ) {
+        MainScope().launch ( Dispatchers.Main ) {
             loadItem()
         }
     }
@@ -195,7 +196,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
     }
 
     override fun refresh() {
-        GlobalScope.launch ( Dispatchers.Main ) {
+        MainScope().launch ( Dispatchers.Main ) {
             loadItem()
         }
     }

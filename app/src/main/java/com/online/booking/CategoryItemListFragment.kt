@@ -18,6 +18,7 @@ import com.online.booking.utils.Refreshable
 import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -49,7 +50,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
         (activity as MainActivity).setVisibleActionItem(0, true)
 
-        GlobalScope.launch ( Dispatchers.Main ) {
+        MainScope().launch ( Dispatchers.Main ) {
             loadItems()
         }
     }
@@ -124,7 +125,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
     }
 
     override fun refresh() {
-        GlobalScope.launch ( Dispatchers.Main ) {
+        MainScope().launch ( Dispatchers.Main ) {
             loadItems()
         }
     }
