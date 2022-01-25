@@ -88,11 +88,6 @@ class ItemDetailFragment : Fragment(), Refreshable {
         return binding.root
     }
 
-    override fun onDestroy() {
-        _binding = null
-        super.onDestroy()
-    }
-
     override fun onStart() {
         super.onStart()
 

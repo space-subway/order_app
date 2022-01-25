@@ -53,23 +53,21 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
     override fun onStart(){
         super.onStart()
-
-        MainScope().launch ( Dispatchers.Main ) {
-            loadItems()
-        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+
+        if(savedInstanceState == null){
+            MainScope().launch ( Dispatchers.Main ) {
+                loadItems()
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("LOADED", true)
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 
     private fun setupCategoriesAdapter( itemsMap: SortedMap<ItemCategory, MutableList<Item>> ){
@@ -89,7 +87,7 @@ class CategoryItemListFragment : Fragment(), Refreshable {
 
         val viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
 
-        viewModel.getItems().observe(this, { resource ->
+        viewModel.getItems().observe(viewLifecycleOwner, { resource ->
             resource?.let { resource ->
 
                 when (resource.status) {

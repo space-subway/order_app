@@ -140,11 +140,6 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    override fun onDestroy() {
-        _binding = null
-        super.onDestroy()
-    }
-
     fun onNetworkError(message: String?) {
         binding.connectionMessage.text = message
         binding.networkStatusView.visibility = View.VISIBLE
