@@ -75,7 +75,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
                 .setPositiveButton(resources.getString(R.string.rate)) { dialog, which ->
                     val viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
 
-                    viewModel.rate( item!!.id, rating ).observe( this, { resource ->
+                    viewModel.rate( item!!.id, rating ).observe( viewLifecycleOwner, { resource ->
                         when(resource.status){
                             Status.SUCCESS_REMOTE -> updateUI( resource.data!! )
                             Status.ERROR -> Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
