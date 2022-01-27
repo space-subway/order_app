@@ -94,12 +94,30 @@ class ItemDetailFragment : Fragment(), Refreshable {
         (activity as MainActivity).showUpToolbar()
         (activity as MainActivity).setVisibleActionItem(0, false)
 
-        MainScope().launch ( Dispatchers.Main ) {
-            loadItem()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if(savedInstanceState == null){
+            MainScope().launch ( Dispatchers.Main ) {
+                loadItem()
+            }
+        } else {
+            if(savedInstanceState.containsKey(ARG_ITEM)){
+                val item: Item? = savedInstanceState.getParcelable(ARG_ITEM)
+                if (item != null) {
+                    updateUI(item)
+                }
+            }
         }
     }
 
-    private fun updateUI( item : Item){
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(ARG_ITEM, item)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun updateUI(item : Item){
         binding.itemPrice.text = "$" + item.price.toDouble()
         binding.itemTitle.text = item.title
         binding.shortDescription.text = item.descriptionShort
@@ -158,20 +176,24 @@ class ItemDetailFragment : Fragment(), Refreshable {
         val viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
 
         //increment view count
-        viewModel.viewCountInc( item!!.id ).observe(this, { resource ->
+        viewModel.viewCountInc( item!!.id ).observe(viewLifecycleOwner, { resource ->
             resource?.let { resource ->
                 when(resource.status){
-                    Status.SUCCESS_REMOTE -> resource.data?.let { updateUI(it) }
+                    Status.SUCCESS_REMOTE -> resource.data?.let {
+                        item = it
+                        updateUI(item!!)
+                    }
                 }
             }
         })
 
-        viewModel.getItem( item!!.id ).observe(this, { resource ->
+        viewModel.getItem( item!!.id ).observe(viewLifecycleOwner, { resource ->
             resource?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS_REMOTE, Status.SUCCESS_LOCAL -> {
                             resource.data?.let {
-                                updateUI(it)
+                                item = it
+                                updateUI(item!!)
                             }
                         }
                     Status.ERROR -> {
