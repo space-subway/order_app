@@ -2,7 +2,6 @@ package com.online.booking
 
 import android.content.Intent
 import android.os.Bundle
-import android.system.Os.accept
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.online.booking.data.viewmodel.ItemViewModel
 import com.online.booking.utils.Refreshable
 import com.online.booking.utils.Status
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -88,12 +86,11 @@ class ItemDetailFragment : Fragment(), Refreshable {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         (activity as MainActivity).showUpToolbar()
         (activity as MainActivity).setVisibleActionItem(0, false)
-
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
