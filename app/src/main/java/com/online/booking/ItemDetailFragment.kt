@@ -27,6 +27,7 @@ class ItemDetailFragment : Fragment(), Refreshable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(false)
 
         arguments?.let {
             if(it.containsKey(ARG_ITEM)){
@@ -86,11 +87,10 @@ class ItemDetailFragment : Fragment(), Refreshable {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         (activity as MainActivity).showUpToolbar()
-        (activity as MainActivity).setVisibleActionItem(0, false)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

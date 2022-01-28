@@ -1,22 +1,23 @@
 package com.online.booking
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.gson.Gson
 import com.online.booking.data.model.Item
 import com.online.booking.data.model.ItemCategory
 import com.online.booking.data.viewmodel.ItemViewModel
 import com.online.booking.databinding.FragmentCategoryItemListBinding
 import com.online.booking.utils.Refreshable
 import com.online.booking.utils.Status
+import com.online.booking.workers.DownloadAllItemsWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -37,6 +38,71 @@ class CategoryItemListFragment : Fragment(), Refreshable {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_app_bar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.download_all_items -> {
+
+            (activity as MainActivity).setVisibleActionItem(0, false)
+
+            val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>()
+                .build()
+
+            val workManager = WorkManager.getInstance(activity as MainActivity)
+
+            workManager.enqueue(downloadAllItemsWork)
+
+            workManager.getWorkInfoByIdLiveData(downloadAllItemsWork.id)
+                .observe(this, { info ->
+                    if( info != null ){
+                        when( info.state ){
+                            WorkInfo.State.RUNNING -> {
+                                val progress = info.progress.getInt(DownloadAllItemsWorker.PROGRESS, 0)
+                                if(progress == 0) {
+                                    //init progress bar
+                                    (activity as MainActivity).binding.progressIndicator.visibility = View.GONE
+                                    (activity as MainActivity).binding.progressIndicator.isIndeterminate = true
+                                    (activity as MainActivity).binding.progressIndicator.progress = 0
+                                    (activity as MainActivity).binding.progressIndicator.visibility = View.VISIBLE
+                                } else {
+                                    (activity as MainActivity).binding.progressIndicator.isIndeterminate = false
+                                }
+                                (activity as MainActivity).binding.progressIndicator.progress = progress
+                            }
+                            WorkInfo.State.SUCCEEDED -> {
+                                (activity as MainActivity).binding.progressIndicator.visibility = View.GONE
+                                (activity as MainActivity).setVisibleActionItem(0, true)
+
+                                refresh()
+                            }
+                            WorkInfo.State.FAILED -> {
+                                val message = info.outputData.getString( DownloadAllItemsWorker.MESSAGE_PARAM )
+
+                                (activity as MainActivity).binding.progressIndicator.visibility = View.GONE
+                                (activity as MainActivity).setVisibleActionItem(0, true)
+                                (activity as MainActivity).showPopUpMessage( message )
+                            }
+                        }
+                    }
+                })
+
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,12 +113,6 @@ class CategoryItemListFragment : Fragment(), Refreshable {
         viewPager   = binding.tabViewpager
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        (activity as MainActivity).setVisibleActionItem(0, true)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
