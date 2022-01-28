@@ -91,7 +91,6 @@ class DownloadAllItemsWorker(context: Context, parameters: WorkerParameters)
         //notification builder setup
         builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID).apply {
             setContentTitle(applicationContext.getString(R.string.notification_channel_name))
-            setContentText(applicationContext.getString(R.string.notification_content_text))
             setSmallIcon(R.drawable.ic_baseline_get_app_24)
             setOngoing(true)
         }

@@ -7,7 +7,6 @@
     <!-- notification -->
     <string name="notification_channel_name">Download all items</string>
     <string name="notification_channel_description">Download all items description</string>
-    <string name="notification_content_text">Download in progress</string>
     <string name="notification_channel_download_complete">Download complete</string>
     <string name="notification_channel_download_error">Download error</string>
 
