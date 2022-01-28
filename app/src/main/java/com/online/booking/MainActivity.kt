@@ -9,8 +9,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.online.booking.databinding.ActivityMainBinding
 import com.online.booking.utils.Refreshable
+import com.online.booking.workers.DownloadAllItemsWorker
 
 class MainActivity : AppCompatActivity() {
 
@@ -79,12 +83,57 @@ class MainActivity : AppCompatActivity() {
         binding.navHostFragmentItemDetail.visibility = View.GONE
     }
 
-    fun showPopUpMessage(message: String?){
+    private fun showPopUpMessage(message: String?){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    fun setVisibleActionItem(i: Int, isVisible: Boolean) {
+    private fun setVisibleActionItem(i: Int, isVisible: Boolean) {
         val menuItem = binding.toolbarMainActivity.menu.getItem(i)
         menuItem.isVisible = isVisible
+    }
+
+    fun downloadAllItems() {
+        setVisibleActionItem(0, false)
+
+        val downloadAllItemsWork = OneTimeWorkRequestBuilder<DownloadAllItemsWorker>()
+            .build()
+
+        val workManager = WorkManager.getInstance(this)
+
+        workManager.enqueue(downloadAllItemsWork)
+
+        workManager.getWorkInfoByIdLiveData(downloadAllItemsWork.id)
+            .observe(this, { info ->
+                if( info != null ){
+                    when( info.state ){
+                        WorkInfo.State.RUNNING -> {
+                            val progress = info.progress.getInt(DownloadAllItemsWorker.PROGRESS, 0)
+                            if(progress == 0) {
+                                //init progress bar
+                                binding.progressIndicator.visibility = View.GONE
+                                binding.progressIndicator.isIndeterminate = true
+                                binding.progressIndicator.progress = 0
+                                binding.progressIndicator.visibility = View.VISIBLE
+                            } else {
+                                binding.progressIndicator.isIndeterminate = false
+                            }
+                            binding.progressIndicator.progress = progress
+                        }
+                        WorkInfo.State.SUCCEEDED -> {
+                            binding.progressIndicator.visibility = View.GONE
+                            setVisibleActionItem(0, true)
+
+                            refresh()
+                        }
+                        WorkInfo.State.FAILED -> {
+                            val message = info.outputData.getString( DownloadAllItemsWorker.MESSAGE_PARAM )
+
+                            binding.progressIndicator.visibility = View.GONE
+                            setVisibleActionItem(0, true)
+                            showPopUpMessage( message )
+                        }
+                    }
+                }
+            })
     }
 }
