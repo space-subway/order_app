@@ -59,9 +59,12 @@ class DownloadAllItemsWorker(context: Context, parameters: WorkerParameters)
 
             NotificationManagerCompat.from(applicationContext).apply {
                 // When done, update the notification one more time to remove the progress bar
-                builder.setContentText(
-                    applicationContext.getString(R.string.notification_channel_download_complete)
-                ).setProgress(0, 0, false)
+                builder.apply {
+                    setContentText(
+                        applicationContext.getString(R.string.notification_channel_download_complete)
+                    )
+                    setProgress(0, 0, false)
+                }
 
                 notify(NOTIFICATION_ID, builder.build())
             }
@@ -69,11 +72,13 @@ class DownloadAllItemsWorker(context: Context, parameters: WorkerParameters)
             Result.success()
         }.getOrElse {
             NotificationManagerCompat.from(applicationContext).apply {
-                builder.setContentText(
-                    it.localizedMessage
-                ).setContentTitle(
-                    applicationContext.getString(R.string.notification_channel_download_error)
-                ).setProgress(0, 0, false)
+                builder.apply {
+                    setContentText(it.localizedMessage)
+                    setContentTitle(applicationContext.getString(R.string.notification_channel_download_error))
+                    setProgress(0, 0, false)
+                    setOngoing(false)
+                }
+
                 notify(NOTIFICATION_ID, builder.build())
             }
 
